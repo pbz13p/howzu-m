@@ -25,6 +25,13 @@
   .sh .step .qr canvas{width:120px;height:120px;display:block;border-radius:8px}
   .sh .step kbd{background:#fff;border:1px solid #cfd8d3;border-radius:4px;padding:0 5px;font-size:12px}
   .sh .step .next{margin-top:6px;border:0;background:#0f6b4f;color:#fff;border-radius:10px;padding:8px 14px;font-size:14px;cursor:pointer}
+  .sh .box{margin-top:10px;background:#f6f4ef;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:12px}
+  .sh .box[hidden]{display:none}
+  .sh .box .row{display:flex;gap:10px;align-items:flex-start}
+  .sh .box .no{flex:none;width:24px;height:24px;border-radius:50%;background:#0f6b4f;color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center;font-weight:600}
+  .sh .box .st{font-size:13px;color:#0f6b4f;margin:2px 0 6px}
+  .sh .box textarea{width:100%;font:13px/1.6 inherit;font-family:inherit;border:1px solid #e4e1d8;border-radius:8px;padding:8px;background:#fff;resize:none;user-select:text;-webkit-user-select:text}
+  .sh .box .cp{margin-top:6px;border:0;background:#0f6b4f;color:#fff;border-radius:10px;padding:8px 14px;font-size:14px;cursor:pointer}
   .sh .tip{font-size:12px;color:#6b726f;margin-top:10px;line-height:1.6}
   .sh-toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%);background:rgba(0,0,0,.8);color:#fff;padding:10px 16px;border-radius:10px;z-index:200;font-size:14px}`;
   const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
@@ -100,67 +107,48 @@
   function download(file) { const l = document.createElement("a"); l.href = URL.createObjectURL(file); l.download = file.name; document.body.appendChild(l); l.click(); l.remove(); }
 
   async function open(x) {
+    const text = wechatText(x);
     const m = document.createElement("div"); m.className = "sh-mask";
-    m.innerHTML = `<div class="sh"><h3>分享这套房 <button aria-label="关闭">✕</button></h3><img class="poster" alt="房源海报"><div class="grid">
-      <button class="main" data-a="wx1"><span>💬 发到微信<small>先发海报，再发文字</small></span></button>
-</div>
-      <a class="moreT" href="#">其他方式 ›</a><div class="more" hidden><button data-a="save">保存海报</button><button data-a="wx">复制微信文案</button><button data-a="link">复制链接</button></div>
-      <div class="step" id="shStep" hidden></div>
-      <div class="tip" id="shTip">${isMobile ? "点一下选微信，海报直接发出；文字已自动复制，在微信里长按 → 粘贴，再发一条。" : ""}</div></div>`;
+    m.innerHTML = `<div class="sh"><h3>转发这套房 <button aria-label="关闭">✕</button></h3><img class="poster" alt="房源海报">
+      <div class="grid"><button class="main" data-a="go"><span>📤 一键转发<small>发微信、朋友圈或任何 App</small></span></button></div>
+      <div class="box" id="shBox" hidden>
+        <div class="row"><span class="no">1</span><div><b>发图片</b><div class="st" id="stImg"></div></div></div>
+        <div class="row"><span class="no">2</span><div style="flex:1"><b>发文字</b><div class="st" id="stTxt"></div>
+          <textarea readonly rows="7">${text.replace(/</g, "&lt;")}</textarea><button class="cp" data-a="txt">复制文字</button></div></div>
+      </div>
+      <a class="moreT" href="#">其他方式 ›</a><div class="more" hidden><button data-a="save">下载海报</button><button data-a="link">复制链接</button></div></div>`;
     document.body.appendChild(m);
     m.addEventListener("click", e => { if (e.target === m || e.target.closest("h3 button")) m.remove(); });
-    // 先把图准备好：分享必须在点击的瞬间发出，不能临时再去下载
-    let poster_ = null, png = null, photos = [];
+    let poster_ = null, png = null;
     const ready = (async () => {
       const c = await poster(x);
       try { const blob = await new Promise(r => c.toBlob(r, "image/jpeg", 0.9)); m.querySelector(".poster").src = URL.createObjectURL(blob);
         poster_ = new File([blob], `好租-${(x.title || "房源").slice(0, 20)}.jpg`, { type: "image/jpeg" }); } catch (_) {}
       try { png = await new Promise(r => c.toBlob(r, "image/png")); } catch (_) {}
-      photos = await photoFiles(x, 8);
     })();
-    const canFiles = fs => fs.length && navigator.canShare && navigator.canShare({ files: fs });
-    async function shareFiles(fs, text, done) {
-      if (isMobile && canFiles(fs)) {
-        try { await navigator.share({ files: fs }); toast(done); return; } catch (e) { if (e && e.name === "AbortError") return; }
-      }
-      fs.forEach((f, i) => setTimeout(() => download(f), i * 250));
-      toast(isMobile ? "图片已保存，文案已复制" : "图片已下载，文案已复制，去微信里粘贴");
-    }
+    const $ = q => m.querySelector(q);
+    const longPress = isMobile ? "长按上面的海报图 → 发送给朋友 / 存到相册" : "在上面的海报图上点右键 → 复制图片，去微信按 Ctrl+V";
     m.addEventListener("click", async e => {
-      if (e.target.closest(".moreT")) { e.preventDefault(); m.querySelector(".more").hidden = false; e.target.remove(); return; }
+      if (e.target.closest(".moreT")) { e.preventDefault(); $(".more").hidden = false; e.target.remove(); return; }
       const a = e.target.closest("button")?.dataset.a; if (!a) return;
-      const stepBox = m.querySelector("#shStep");
-      if (!isMobile && a === "wx1") {
-        await ready;
-        let ok = false;
-        try { if (png && window.ClipboardItem) { await navigator.clipboard.write([new ClipboardItem({ "image/png": png })]); ok = true; } } catch (_) {}
-        if (!ok) { if (poster_) download(poster_); copy(wechatText(x)); return toast("已下载海报、复制文案"); }
-        stepBox.hidden = false;
-        stepBox.innerHTML = `<div><b>① 海报已复制（不用下载）</b>：去微信对话框按 <kbd>Ctrl</kbd>+<kbd>V</kbd>，发送。<br><button class="next" data-a="wx2">② 点这里复制文字</button></div>`;
-        stepBox.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      if (a === "go") {
+        if (!poster_) { toast("海报还在生成，稍等一秒"); await ready; }
+        const copied = await copy(text);
+        $("#shBox").hidden = false;
+        $("#stTxt").textContent = copied ? "✓ 已自动复制，在聊天框里长按 → 粘贴（电脑按 Ctrl+V）" : "点下面「复制文字」，或长按文字全选复制";
+        $("#stImg").textContent = longPress;
+        $("#shBox").scrollIntoView({ block: "nearest", behavior: "smooth" });
+        if (isMobile && poster_ && navigator.canShare && navigator.canShare({ files: [poster_] })) {
+          try { await navigator.share({ files: [poster_] }); $("#stImg").textContent = "✓ 海报已发出。接着发一条文字（已复制好）"; }
+          catch (err) { if (!err || err.name !== "AbortError") $("#stImg").textContent = longPress; }
+        } else if (!isMobile && png && window.ClipboardItem && window.isSecureContext) {
+          try { await navigator.clipboard.write([new ClipboardItem({ "image/png": png })]); $("#stImg").textContent = "✓ 海报已复制，去微信按 Ctrl+V 发送。再回来点「复制文字」"; $("#stTxt").textContent = "发完图片后，点「复制文字」，再去微信按 Ctrl+V"; } catch (_) {}
+        }
         return;
       }
-      if (a === "wx2") { await copy(wechatText(x)); stepBox.innerHTML = `<div><b>② 文字已复制</b>：回微信再按 <kbd>Ctrl</kbd>+<kbd>V</kbd>，发送。完成 ✓</div>`; return; }
-      if (!isMobile && a === "xhs1") {
-        const u = `${url(x)}&send=1`;
-        const q = qrCanvas(u, 200);
-        stepBox.hidden = false;
-        stepBox.innerHTML = `<div class="qr"></div><div><b>小红书要用手机发</b><br>用手机相机扫这个码，点「一键发小红书」，照片和文案就直接进小红书了。</div>`;
-        if (q) stepBox.querySelector(".qr").appendChild(q); else stepBox.querySelector(".qr").textContent = u;
-        stepBox.scrollIntoView({ block: "nearest", behavior: "smooth" });
-        return;
-      }
-      if (a === "wx1" || a === "xhs1") {
-        const text = a === "wx1" ? wechatText(x) : xhsText(x);
-        if (!poster_) { toast("图片还在生成，稍等一秒再点"); await ready; return; }
-        copy(text); // 不等它，保证分享窗口在点击瞬间弹出
-        const fs = a === "wx1" ? [poster_] : [poster_, ...photos].slice(0, 9);
-        return shareFiles(fs, text, "文案已复制，在正文框里长按粘贴");
-      }
-      if (a === "wx") { await copy(wechatText(x)); toast("微信文案已复制"); }
-      if (a === "xhs") { await copy(xhsText(x)); toast("小红书文案已复制"); }
+      if (a === "txt") { const ok = await copy(text); if (!ok) { const t = $("textarea"); t.focus(); t.select(); } $("#stTxt").textContent = "✓ 文字已复制，去聊天框粘贴"; toast("文字已复制"); }
       if (a === "link") { await copy(url(x)); toast("链接已复制"); }
-      if (a === "save") { await ready; if (!poster_) return toast("海报生成失败"); shareFiles([poster_], "", "海报已发出"); }
+      if (a === "save") { await ready; if (poster_) download(poster_); }
     });
   }
   window.HowzuShare = { open };
