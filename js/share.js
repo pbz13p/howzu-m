@@ -14,6 +14,7 @@
   .sh .grid button{border:1px solid #e4e1d8;background:#fff;border-radius:12px;padding:12px 8px;font-size:14px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;color:#1d2321}
   .sh .grid button b{font-size:22px;line-height:1}
   .sh .grid button.main{grid-column:1/-1;background:#0f6b4f;color:#fff;border-color:#0f6b4f;flex-direction:row;justify-content:center;font-size:16px;font-weight:600}
+  .sh .grid button.main small{display:block;font-size:12px;font-weight:400;opacity:.85;margin-top:2px}
   .sh .grid button.xhs{background:#ff2442;border-color:#ff2442}
   .sh .more{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
   .sh .more button{border:1px solid #e4e1d8;background:#fff;border-radius:16px;padding:6px 12px;font-size:13px;cursor:pointer;color:#1d2321}
@@ -101,7 +102,7 @@
   async function open(x) {
     const m = document.createElement("div"); m.className = "sh-mask";
     m.innerHTML = `<div class="sh"><h3>分享这套房 <button aria-label="关闭">✕</button></h3><img class="poster" alt="房源海报"><div class="grid">
-      <button class="main" data-a="wx1">💬 发微信（先发海报，再发文字）</button>
+      <button class="main" data-a="wx1"><span>💬 发到微信<small>先发海报，再发文字</small></span></button>
 </div>
       <a class="moreT" href="#">其他方式 ›</a><div class="more" hidden><button data-a="save">保存海报</button><button data-a="wx">复制微信文案</button><button data-a="link">复制链接</button></div>
       <div class="step" id="shStep" hidden></div>
