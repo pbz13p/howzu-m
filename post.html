@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>免费发布房源 · 好租 Howzu</title>
+<link rel="icon" href="favicon.ico" sizes="32x32"><link rel="icon" href="icons/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0f6b4f"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="好租"><meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="description" content="3 分钟免费发布墨尔本出租房源：拍照、点选、发布。不用注册，审核后上线。">
+<link rel="stylesheet" href="css/site.css?v=20261107">
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1d2321;--muted:#6b726f;--line:#e4e1d8;--accent:#0f6b4f;--accent2:#e8f3ee;--warn:#9a5b00;--warnbg:#fff6e5;--bad:#a12b2b}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;padding-bottom:90px}
+main{max-width:720px;margin:0 auto;padding:22px 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
+h2{font-size:16px;margin:0 0 10px;display:flex;align-items:center;gap:8px}
+h2 .n{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;align-items:center;justify-content:center}
+.opt{font-size:12px;color:var(--muted);font-weight:400}
+label.l{display:block;font-size:13px;color:var(--muted);margin:12px 0 6px}
+input[type=text],input[type=tel],input[type=number],input[type=date],textarea{width:100%;font-size:16px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font-family:inherit;background:#fff;color:var(--ink)}
+textarea{resize:vertical;min-height:110px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{font-size:15px;padding:9px 14px;border-radius:22px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.chips button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.steppers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.step{border:1px solid var(--line);border-radius:12px;padding:8px 6px;text-align:center;min-width:0}
+.step .t{font-size:13px;color:var(--muted)}
+.step .ctl{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+.step button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--accent2);color:var(--accent);font-size:22px;line-height:1;cursor:pointer}
+.step b{font-size:22px;min-width:24px}
+.rent{display:flex;gap:8px;align-items:center}
+.rent input{flex:1}
+.rent .unit{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.rent .unit button{border:0;padding:11px 12px;background:#fff;font-size:15px;cursor:pointer;color:var(--ink)}
+.rent .unit button.on{background:var(--accent);color:#fff}
+.hint{font-size:12px;color:var(--muted);margin-top:6px}
+.drop{border:2px dashed #b9cfc5;border-radius:14px;padding:22px 12px;text-align:center;background:var(--accent2);color:var(--accent);cursor:pointer;font-size:15px}
+.drop b{font-size:17px;display:block;margin-bottom:2px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
+.ph{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;background:#eee}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ph .cover{position:absolute;left:4px;top:4px;background:var(--accent);color:#fff;font-size:11px;padding:1px 6px;border-radius:8px}
+.ph .x,.ph .mv{position:absolute;bottom:4px;width:28px;height:28px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:15px;cursor:pointer}
+.ph .x{right:4px}.ph .mv{left:4px}
+.ph .fx{position:absolute;right:4px;top:4px;border:0;border-radius:10px;font-size:11px;padding:2px 7px;background:rgba(255,255,255,.92);color:#0f6b4f;cursor:pointer;font-weight:600}
+.ph .fx.off{background:rgba(0,0,0,.55);color:#fff}
+.ph .busy{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.7);font-size:12px}
+#sug div{padding:10px;border-bottom:1px solid var(--line);font-size:14px;cursor:pointer}
+#sug div:active{background:var(--accent2)}
+.ghost{font-size:14px;padding:8px 12px;border-radius:10px;border:0;background:var(--accent2);color:var(--accent);cursor:pointer;margin-top:8px}
+.bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));display:flex;gap:10px;align-items:center;justify-content:center}
+.bar .prog{font-size:13px;color:var(--muted)}
+.submit{font-size:17px;padding:13px 26px;border:0;border-radius:12px;background:var(--accent);color:#fff;cursor:pointer;font-weight:600}
+.submit:disabled{opacity:.5}
+.err{color:var(--bad);font-size:13px;margin-top:6px}
+.done{text-align:center;padding:30px 16px}
+.done b{font-size:20px;display:block;margin:10px 0}
+.closed{background:var(--warnbg);color:var(--warn);border-radius:12px;padding:12px;font-size:14px;margin-bottom:12px}
+.hp{position:absolute;left:-9999px}
+.aibox{margin-top:10px;border:1px solid #cfe3d8;background:#f4faf6;border-radius:12px;padding:12px}
+.ai-h{font-size:13px;color:#0f6b4f;font-weight:600;margin-bottom:6px}
+.ai-t{font-weight:600;font-size:15px;margin-bottom:6px}
+.ai-d{white-space:pre-wrap;font-size:14px;line-height:1.7;color:#2b322f}
+.ai-a{display:flex;gap:8px;margin-top:10px}
+.ai-a button{font-size:14px;padding:8px 14px;border-radius:10px;border:1px solid #cfe3d8;background:#fff;cursor:pointer;color:#0f6b4f}
+.ai-a button.use{background:#0f6b4f;color:#fff;border-color:#0f6b4f}
+.demo{display:grid;grid-template-columns:1fr;gap:12px;background:linear-gradient(135deg,#fffaf0,#eef7f2)}
+.demo-txt b{display:block;font-size:18px;color:#0f6b4f;margin-bottom:4px}
+.demo-txt span{font-size:14px;color:#3b4340}
+.ba{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:16/10;user-select:none}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ba-b{position:absolute;inset:0;width:50%;overflow:hidden}
+.ba-b img{width:auto;height:100%;max-width:none}
+.ba-h{position:absolute;top:0;bottom:0;left:50%;width:3px;background:#fff;box-shadow:0 0 6px rgba(0,0,0,.4);pointer-events:none}
+.ba-h::after{content:"⇆";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;background:#fff;color:#0f6b4f;display:flex;align-items:center;justify-content:center;font-size:16px}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.ba-l,.ba-r{position:absolute;top:8px;font-size:12px;padding:2px 8px;border-radius:8px;background:rgba(0,0,0,.55);color:#fff;pointer-events:none}
+.ba-l{left:8px}.ba-r{right:8px;background:rgba(15,107,79,.9)}
+@media(min-width:721px){.demo{grid-template-columns:1fr 1.3fr;align-items:center}}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="in">
+  <a class="logo" href="index.html"><i>好</i>好租 Howzu<small>墨尔本 · 学区 · 租房 · 投资</small></a>
+  <div class="links"><a href="index.html">🏫 查学区</a><a href="rentals.html">🏠 在租房源</a><a href="invest.html">📈 投资测算</a></div>
+  <a class="post" href="post.html">＋ 免费发房源</a>
+</div></nav>
+<header class="hero"><div class="in"><h1>免费发布房源</h1><p>拍照 → 点几下 → 发布。不用注册，3 分钟搞定，审核后上线。</p></div></header>
+<main id="main">
+  <div class="closed" id="closed" hidden>发布功能马上开放，现在提交的内容还不会保存。</div>
+
+  <section class="card">
+    <h2><span class="n">1</span>上传照片 <span class="opt">最多 15 张，第一张是封面</span></h2>
+    <div class="drop" id="drop"><b>📷 点这里选照片</b>可以一次选多张，手机会自动压缩</div>
+    <input type="file" id="file" accept="image/*" multiple hidden>
+    <div class="grid" id="grid"></div>
+    <div class="hint">建议拍：客厅、卧室、厨房整体、浴室、窗外景色、楼里泳池/健身房。白天开灯、横着拍更好看，不用拍锅碗瓢盆。</div>
+  </section>
+
+  <section class="card">
+    <h2><span class="n">2</span>房子情况</h2>
+    <div class="chips" data-k="kind" data-single>
+      <button class="on">整套出租</button><button>单间出租</button><button>转租 / 顶租约</button><button>短租</button>
+    </div>
+    <label class="l">房型</label>
+    <div class="steppers">
+      <div class="step"><div class="t">卧室</div><div class="ctl"><button data-s="beds" data-d="-1">−</button><b id="v-beds">2</b><button data-s="beds" data-d="1">＋</button></div></div>
+      <div class="step"><div class="t">卫生间</div><div class="ctl"><button data-s="baths" data-d="-1">−</button><b id="v-baths">1</b><button data-s="baths" data-d="1">＋</button></div></div>
+      <div class="step"><div class="t">车位</div><div class="ctl"><button data-s="cars" data-d="-1">−</button><b id="v-cars">0</b><button data-s="cars" data-d="1">＋</button></div></div>
+    </div>
+    <label class="l">租金（澳元）</label>
+    <div class="rent">
+      <input type="number" id="rent" inputmode="numeric" placeholder="如 650">
+      <div class="unit" id="unit"><button class="on" data-u="w">每周</button><button data-u="m">每月</button></div>
+    </div>
+    <div class="hint" id="rentHint"></div>
+    <label class="l">什么时候能入住</label>
+    <div class="chips" data-k="when" data-single>
+      <button class="on">马上</button><button>两周内</button><button data-date>选日期</button>
+    </div>
+    <input type="date" id="date" hidden style="margin-top:8px">
+    <label class="l">家具</label>
+    <div class="chips" data-k="furnished" data-single>
+      <button>带家具</button><button>不带家具</button><button>部分家具</button>
+    </div>
+    <label class="l">亮点 <span class="opt">可多选</span></label>
+    <div class="chips" data-k="highlights">
+      <button>近火车站</button><button>免费电车区</button><button>近大学</button><button>泳池/健身房</button><button>有阳台</button><button>景观好</button><button>包水费</button><button>包网</button><button>可养宠物</button><button>近华人超市</button><button>学区好</button><button>安静</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="n">3</span>地址</h2>
+    <input type="text" id="addr" placeholder="输入地址，如 138 Spencer St Melbourne" autocomplete="off">
+    <div id="sug"></div>
+    <div class="hint">房号（Unit）只给审核看，网上只显示街道和区。</div>
+  </section>
+
+  <section class="card">
+    <h2><span class="n">4</span>标题和介绍 <span class="opt">不会写就让 AI 帮你写</span></h2>
+    <input type="text" id="title" maxlength="60" placeholder="如 CBD 两房一卫 · 近南十字星站 · 马上入住">
+    <textarea id="desc" maxlength="2000" placeholder="交通、周边、房子的好处、对租客的要求…" style="margin-top:8px"></textarea>
+    <button class="ghost" id="ai">✨ AI 帮我写（先预览，你同意才用）</button>
+    <div class="aibox" id="aibox" hidden>
+      <div class="ai-h">✨ AI 写的建议 <span class="opt">只用了你填的信息，可以改</span></div>
+      <div class="ai-t" id="aiT"></div><div class="ai-d" id="aiD"></div>
+      <div class="ai-a"><button class="use" id="aiUse">用这段</button><button id="aiAgain">换一个</button><button id="aiNo">不用</button></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="n">5</span>怎么联系你 <span class="opt">微信和手机至少填一个</span></h2>
+    <label class="l">称呼</label><input type="text" id="cname" maxlength="30" placeholder="如 王先生">
+    <label class="l">微信号</label><input type="text" id="wechat" maxlength="40" placeholder="微信号">
+    <label class="l">手机</label><input type="tel" id="phone" maxlength="20" placeholder="如 04xx xxx xxx">
+    <input type="text" id="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="hint">提交即表示房源信息真实，你有权出租这套房。虚假房源会被删除。</div>
+  </section>
+  <div class="err" id="err"></div>
+</main>
+<div class="bar"><span class="prog" id="prog">还差：照片、租金、地址、联系方式</span><button class="submit" id="go">发布</button></div>
+
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import "./js/config.js";
+const C = window.HOWZU || {};
+const sb = C.SUPABASE_URL && C.SUPABASE_ANON_KEY ? createClient(C.SUPABASE_URL, C.SUPABASE_ANON_KEY) : null;
+if (!sb) document.getElementById("closed").hidden = false;
+const $ = s => document.querySelector(s);
+const S = { photos: [], beds: 2, baths: 1, cars: 0, unit: "w", lat: null, lng: null, suburb: "" };
+const LIM = { beds: [0, 10], baths: [1, 10], cars: [0, 10] };
+
+// ---------- before/after demo ----------
+// ---------- photos ----------
+$("#drop").onclick = () => $("#file").click();
+$("#file").onchange = e => { addFiles([...e.target.files]); e.target.value = ""; };
+// 自动美化：曝光、白平衡、对比度、色彩、锐度。全部在手机上完成，不上传原图。
+function enhance(c) {
+  const g = c.getContext("2d", { willReadFrequently: true }), W = c.width, H = c.height;
+  const im = g.getImageData(0, 0, W, H), d = im.data, N = W * H;
+  const hist = new Uint32Array(256); let sr = 0, sg = 0, sb = 0, mc = 0;
+  for (let i = 0; i < d.length; i += 4) {
+    const y = (d[i] * 77 + d[i + 1] * 150 + d[i + 2] * 29) >> 8; hist[y]++;
+    if (y > 40 && y < 220) { sr += d[i]; sg += d[i + 1]; sb += d[i + 2]; mc++; }
+  }
+  const pct = q => { let a = 0, t = N * q; for (let v = 0; v < 256; v++) { a += hist[v]; if (a >= t) return v; } return 255; };
+  let mean0 = 0; for (let v = 0; v < 256; v++) mean0 += hist[v] * v; mean0 /= N * 255;
+  const need = Math.max(0, Math.min(1, (0.55 - mean0) / 0.2)); // 照片越暗/越灰，调得越多；本来就好的只轻微调
+  const lo = Math.min(pct(0.01), 45), hi = Math.max(pct(need > 0.3 ? 0.985 : 0.997), 185);
+  // 白平衡（灰世界，限制幅度，避免偏色过头）
+  const avg = mc ? (sr + sg + sb) / (3 * mc) : 128, cl = v => Math.max(0.88, Math.min(1.12, v));
+  const warm = mc && sb >= sr ? 1 : 0; /* 只有偏冷的照片才加暖 */
+  const gr = (mc ? cl(avg / (sr / mc)) : 1) * (1 + 0.03 * warm), gg = (mc ? cl(avg / (sg / mc)) : 1) * (1 + 0.01 * warm), gb = (mc ? cl(avg / (sb / mc)) : 1) * (1 - 0.04 * warm);
+  // 亮度：室内照偏暗就提亮
+  let mean = 0; for (let v = 0; v < 256; v++) mean += hist[v] * Math.min(1, Math.max(0, (v - lo) / (hi - lo))); mean /= N;
+  const gamma = mean < 0.56 ? Math.max(0.62, Math.log(0.58) / Math.log(Math.max(mean, 0.05))) : 1;
+  const lut = (gain) => { const t = new Uint8ClampedArray(256); for (let v = 0; v < 256; v++) { let x = Math.min(1, Math.max(0, (v * gain - lo) / (hi - lo))); x = Math.pow(x, gamma); x = x - (0.025 + 0.035 * need) * Math.sin(2 * Math.PI * x); x = Math.min(1, Math.max(0, x)); /* S 曲线：更通透 */ t[v] = x * 255; } return t; };
+  const LR = lut(gr), LG = lut(gg), LB = lut(gb);
+  for (let i = 0; i < d.length; i += 4) {
+    let r = LR[d[i]], gg2 = LG[d[i + 1]], b = LB[d[i + 2]];
+    const y = 0.299 * r + 0.587 * gg2 + 0.114 * b, mx = Math.max(r, gg2, b), mn = Math.min(r, gg2, b);
+    const k = 1 + (0.1 + 0.18 * need) * (1 - (mx - mn) / 255); // 鲜艳度：越灰的颜色加得越多
+    d[i] = y + (r - y) * k; d[i + 1] = y + (gg2 - y) * k; d[i + 2] = y + (b - y) * k;
+  }
+  // 轻度锐化
+  const src = new Uint8ClampedArray(d), amt = 0.45, row = W * 4;
+  for (let yy = 1; yy < H - 1; yy++) for (let xx = 1; xx < W - 1; xx++) {
+    const i = yy * row + xx * 4;
+    for (let ch = 0; ch < 3; ch++) { const j = i + ch; const blur = (src[j - 4] + src[j + 4] + src[j - row] + src[j + row]) / 4; d[j] = src[j] + amt * (src[j] - blur); }
+  }
+  g.putImageData(im, 0, 0);
+}
+async function shrink(file) {
+  const bmp = await createImageBitmap(file).catch(() => null);
+  let w, h, src;
+  if (bmp) { w = bmp.width; h = bmp.height; src = bmp; }
+  else { const img = new Image(); img.src = URL.createObjectURL(file); await img.decode(); w = img.naturalWidth; h = img.naturalHeight; src = img; }
+  const k = Math.min(1, 1600 / Math.max(w, h));
+  const c = document.createElement("canvas"); c.width = Math.round(w * k); c.height = Math.round(h * k);
+  c.getContext("2d").drawImage(src, 0, 0, c.width, c.height);
+  const orig = await new Promise(r => c.toBlob(r, "image/jpeg", 0.85));
+  let enh = orig; try { enhance(c); enh = await new Promise(r => c.toBlob(r, "image/jpeg", 0.85)); } catch (_) {}
+  return { orig, enh };
+}
+async function addFiles(files) {
+  for (const f of files) {
+    if (S.photos.length >= 15) break;
+    if (!f.type.startsWith("image/")) continue;
+    const p = { id: Math.random().toString(36).slice(2), url: URL.createObjectURL(f), blob: null };
+    S.photos.push(p); render();
+    try { const r = await shrink(f); p.orig = r.orig; p.enh = r.enh; p.ourl = URL.createObjectURL(r.orig); p.eurl = URL.createObjectURL(r.enh); setUse(p, false); } catch (_) { p.blob = f; }
+    render();
+  }
+}
+function setUse(p, orig) { p.useOrig = orig; p.blob = orig ? p.orig : p.enh; p.url = orig ? p.ourl : p.eurl; }
+function render() {
+  $("#grid").innerHTML = S.photos.map((p, i) => `<div class="ph"><img src="${p.url}">${i === 0 ? '<span class="cover">封面</span>' : ""}${!p.blob ? '<div class="busy">处理中…</div>' : ""}${i ? `<button class="mv" data-mv="${i}" title="设为封面">★</button>` : ""}<button class="x" data-x="${i}">✕</button></div>`).join("");
+  progress();
+}
+$("#grid").onclick = e => {
+  const x = e.target.dataset.x, mv = e.target.dataset.mv, fx = e.target.dataset.fx;
+  if (fx != null) { const p = S.photos[+fx]; setUse(p, !p.useOrig); render(); return; }
+  if (x != null) { S.photos.splice(+x, 1); render(); }
+  if (mv != null) { const [p] = S.photos.splice(+mv, 1); S.photos.unshift(p); render(); }
+};
+
+// ---------- chips & steppers ----------
+document.querySelectorAll(".chips").forEach(g => g.addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (g.hasAttribute("data-single")) { g.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); }
+  else b.classList.toggle("on");
+  if (g.dataset.k === "when") $("#date").hidden = !b.hasAttribute("data-date");
+  save(); progress();
+}));
+const chips = k => [...document.querySelectorAll(`.chips[data-k="${k}"] button.on`)].map(b => b.textContent);
+document.querySelectorAll("[data-s]").forEach(b => b.onclick = () => {
+  const k = b.dataset.s; S[k] = Math.max(LIM[k][0], Math.min(LIM[k][1], S[k] + +b.dataset.d)); $("#v-" + k).textContent = S[k]; save();
+});
+$("#unit").onclick = e => { const b = e.target.closest("button"); if (!b) return; S.unit = b.dataset.u; $("#unit").querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); rentHint(); };
+function weekly() { const v = +$("#rent").value || 0; return S.unit === "m" ? Math.round(v * 12 / 52) : v; }
+function rentHint() { const v = +$("#rent").value || 0; $("#rentHint").textContent = v ? (S.unit === "m" ? `≈ 每周 $${weekly()}` : `≈ 每月 $${Math.round(v * 52 / 12)}`) : ""; progress(); }
+$("#rent").oninput = () => { rentHint(); save(); };
+
+// ---------- address autocomplete (Photon / OSM) ----------
+let t;
+$("#addr").oninput = () => {
+  S.lat = S.lng = null; clearTimeout(t); const q = $("#addr").value.trim(); progress(); save();
+  if (q.length < 4) { $("#sug").innerHTML = ""; return; }
+  t = setTimeout(async () => {
+    try {
+      const j = await fetch("https://photon.komoot.io/api/?limit=5&lat=-37.81&lon=144.96&bbox=140.9,-39.2,150,-34&q=" + encodeURIComponent(q)).then(r => r.json());
+      $("#sug").innerHTML = j.features.map((f, i) => { const p = f.properties; const label = [[p.housenumber, p.street || p.name].filter(Boolean).join(" "), p.city || p.district || p.locality, [p.state === "Victoria" ? "VIC" : p.state, p.postcode].filter(Boolean).join(" ")].filter(Boolean).join(", "); return `<div data-i="${i}" data-label="${label.replace(/"/g, "")}" data-lat="${f.geometry.coordinates[1]}" data-lng="${f.geometry.coordinates[0]}" data-sub="${(p.city || p.district || p.locality || "").replace(/"/g, "")}">${label}</div>`; }).join("");
+    } catch (_) {}
+  }, 350);
+};
+$("#sug").onclick = e => {
+  const d = e.target.closest("div[data-i]"); if (!d) return;
+  const typed = $("#addr").value.trim(); const unit = (typed.match(/^\s*(\w+)\s*\//) || [])[1];
+  $("#addr").value = (unit ? unit + "/" : "") + d.dataset.label; S.lat = +d.dataset.lat; S.lng = +d.dataset.lng; S.suburb = d.dataset.sub;
+  $("#sug").innerHTML = ""; progress(); save();
+};
+
+// ---------- auto write ----------
+function factsNow() {
+  const when = chips("when")[0];
+  return { kind: chips("kind")[0] || "整套出租", suburb: S.suburb || (($("#addr").value.split(",")[1]) || "").trim(),
+    street: $("#addr").value.replace(/^\s*[\w-]+\s*\/\s*/, "").split(",")[0], beds: S.beds, baths: S.baths, cars: S.cars,
+    rent: weekly() || null, available: when === "选日期" ? ($("#date").value || "") : when, furnished: chips("furnished")[0] || "",
+    highlights: chips("highlights"), notes: $("#desc").value.trim() };
+}
+function templateWrite(f) {
+  const area = f.suburb || "墨尔本", room = f.kind === "单间出租" ? "单间" : `${f.beds} 房 ${f.baths} 卫${f.cars ? " " + f.cars + " 车位" : ""}`;
+  const whenTxt = f.available ? (f.available === "马上" ? "马上入住" : f.available + "入住") : "";
+  const title = [area, room, f.highlights[0], whenTxt].filter(Boolean).join(" · ").slice(0, 30);
+  const d = [`${area}${f.kind === "转租 / 顶租约" ? "转租" : "出租"}，${room}${f.furnished ? "，" + f.furnished : ""}。`, "",
+    "🏠 房子", `· ${room}`, f.rent ? `· 每周 $${f.rent}` : "", whenTxt ? `· ${whenTxt}` : "",
+    f.highlights.length ? "" : null, f.highlights.length ? "✨ 亮点" : null, ...f.highlights.map(h => "· " + h), "", "欢迎联系预约看房。"].filter(v => v !== null && v !== undefined);
+  return { title, description: d.join("\n").replace(/\n{3,}/g, "\n\n") };
+}
+let aiRes = null;
+async function runAI() {
+  const btn = $("#ai"); btn.disabled = true; btn.textContent = "✨ AI 正在写…";
+  const f = factsNow(); let r = null;
+  try {
+    if (C.SUPABASE_URL) {
+      const res = await fetch(C.SUPABASE_URL + "/functions/v1/describe", { method: "POST", headers: { "content-type": "application/json", apikey: C.SUPABASE_ANON_KEY }, body: JSON.stringify(f) });
+      const j = await res.json(); if (res.ok && j.description) r = j;
+    }
+  } catch (_) {}
+  if (!r) r = templateWrite(f);
+  aiRes = r; $("#aiT").textContent = r.title || ""; $("#aiD").textContent = r.description || ""; $("#aibox").hidden = false;
+  btn.disabled = false; btn.textContent = "✨ AI 帮我写（先预览，你同意才用）";
+}
+$("#ai").onclick = runAI;
+$("#aiAgain").onclick = runAI;
+$("#aiNo").onclick = () => { $("#aibox").hidden = true; aiRes = null; };
+$("#aiUse").onclick = () => { if (!aiRes) return; if (aiRes.title) $("#title").value = aiRes.title; $("#desc").value = aiRes.description; $("#aibox").hidden = true; save(); progress(); };
+
+// ---------- progress / validation ----------
+function missing() {
+  const m = [];
+  if (!S.photos.length) m.push("照片");
+  if (!weekly()) m.push("租金");
+  if ($("#addr").value.trim().length < 5) m.push("地址");
+  if (!$("#wechat").value.trim() && !$("#phone").value.trim()) m.push("联系方式");
+  return m;
+}
+function progress() { const m = missing(); $("#prog").textContent = m.length ? "还差：" + m.join("、") : "✅ 都填好了"; }
+["#wechat", "#phone", "#cname", "#title", "#desc", "#date"].forEach(s => $(s).addEventListener("input", () => { progress(); save(); }));
+
+// ---------- draft (text only) ----------
+const KEY = "howzu-post-draft";
+function save() { try { localStorage.setItem(KEY, JSON.stringify({ beds: S.beds, baths: S.baths, cars: S.cars, unit: S.unit, rent: $("#rent").value, addr: $("#addr").value, title: $("#title").value, desc: $("#desc").value, cname: $("#cname").value, wechat: $("#wechat").value, phone: $("#phone").value, lat: S.lat, lng: S.lng, suburb: S.suburb })); } catch (_) {} }
+try { const d = JSON.parse(localStorage.getItem(KEY) || "null"); if (d) { Object.assign(S, { beds: d.beds, baths: d.baths, cars: d.cars, lat: d.lat, lng: d.lng, suburb: d.suburb }); ["beds", "baths", "cars"].forEach(k => $("#v-" + k).textContent = S[k]); for (const k of ["rent", "addr", "title", "desc", "cname", "wechat", "phone"]) $("#" + k).value = d[k] || ""; rentHint(); } } catch (_) {}
+progress();
+
+// ---------- submit ----------
+$("#go").onclick = async () => {
+  const m = missing(); $("#err").textContent = "";
+  if (m.length) { $("#err").textContent = "还差：" + m.join("、"); return; }
+  if ($("#website").value) return; // bot
+  if (S.photos.some(p => !p.blob)) { $("#err").textContent = "照片还在压缩，稍等几秒再点。"; return; }
+  if (!sb) { $("#err").textContent = "发布功能还没开放（后台正在设置），请过几天再来。"; return; }
+  const go = $("#go"); go.disabled = true;
+  try {
+    const folder = new Date().toISOString().slice(0, 10) + "/" + crypto.randomUUID();
+    const urls = [];
+    for (let i = 0; i < S.photos.length; i++) {
+      go.textContent = `上传照片 ${i + 1}/${S.photos.length}`;
+      const path = `${folder}/${i + 1}.jpg`;
+      const { error } = await sb.storage.from(C.BUCKET).upload(path, S.photos[i].blob, { contentType: "image/jpeg" });
+      if (error) throw error;
+      urls.push(sb.storage.from(C.BUCKET).getPublicUrl(path).data.publicUrl);
+    }
+    go.textContent = "提交中…";
+    const when = chips("when")[0];
+    const row = {
+      kind: chips("kind")[0] || "整套出租",
+      title: ($("#title").value.trim() || `${S.suburb || "墨尔本"} ${S.beds} 房 ${S.baths} 卫`).slice(0, 80),
+      address: $("#addr").value.trim(), suburb: S.suburb || null, lat: S.lat, lng: S.lng,
+      beds: S.beds, baths: S.baths, cars: S.cars, rent_weekly: weekly(),
+      available: when === "选日期" ? ($("#date").value || "选日期") : when,
+      furnished: chips("furnished")[0] || null, highlights: chips("highlights"),
+      description: $("#desc").value.trim() || null,
+      contact_name: $("#cname").value.trim() || null, contact_wechat: $("#wechat").value.trim() || null, contact_phone: $("#phone").value.trim() || null,
+      photos: urls
+    };
+    const { error } = await sb.from("listings").insert(row);
+    if (error) throw error;
+    try { localStorage.removeItem(KEY); } catch (_) {}
+    $("#main").innerHTML = `<div class="card done">🎉<b>提交成功！</b>我们审核后会尽快上线（一般 24 小时内）。<br><br><a href="rentals.html">去看看在租房源 ›</a><br><br><a href="post.html">再发一套 ›</a></div>`;
+    document.querySelector(".bar").remove();
+  } catch (e) {
+    $("#err").textContent = "提交失败：" + (e.message || e) + "。请检查网络后再点一次。";
+    go.disabled = false; go.textContent = "发布";
+  }
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+{"type":"FeatureCollection", "features": [
+{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[145.01812,-37.83546],[145.06121,-37.81403],[145.0274,-37.79664],[145.01812,-37.83546]]]},"properties":{"School_Name":"Swinburne Senior Secondary College","Campus_Name":"Swinburne Senior Secondary College","ENTITY_CODE":1736601,"Year_Level":"11 to 12","Boundary_Year":"2027"}},
+{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[145.10939,-37.83706],[145.12655,-37.81168],[145.09766,-37.7971],[145.08842,-37.81505],[145.10939,-37.83706]]]},"properties":{"School_Name":"Box Hill Senior Secondary College","Campus_Name":"Box Hill Senior Secondary College","ENTITY_CODE":1705001,"Year_Level":"10 to 12","Boundary_Year":"2027"}},
+{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[145.04937,-37.74843],[145.04138,-37.73331],[145.01428,-37.72909],[145.0169,-37.74823],[145.04937,-37.74843]]]},"properties":{"School_Name":"Northern College of the Arts and Technology","Campus_Name":"Northern College of the Arts and Technology","ENTITY_CODE":1730001,"Year_Level":"10 to 12","Boundary_Year":"2027"}}
+]}

@@ -1,0 +1,332 @@
+== files ==
+raw:
+total 708
+drwxr-xr-x 3 runner runner   4096 Nov  6 23:34 .
+drwxr-xr-x 8 runner runner   4096 Nov  6 23:34 ..
+-rw-r--r-- 1 runner runner     12 Nov  6 23:34 _manifest.txt
+-rw-r--r-- 1 runner runner 539003 Nov  6 23:34 school_locations.csv
+-rw-r--r-- 1 runner runner 165023 Nov  6 23:34 vce_2025.xlsx
+drwxr-xr-x 2 runner runner   4096 Nov  6 23:34 zones
+
+tmp:
+total 10432
+drwxr-xr-x 2 runner runner     4096 Nov  6 23:34 .
+drwxr-xr-x 8 runner runner     4096 Nov  6 23:34 ..
+-rw-r--r-- 1 runner runner 10673831 Nov  6 23:34 zones.zip
+== zip contents ==
+Archive:  tmp/zones.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+      248  2026-01-04 23:19   Primary_Integrated_2027.tab
+   333040  2026-03-06 04:24   Secondary_Integrated_Year7_2027.dat
+  2381619  2026-03-10 00:29   Secondary_Integrated_Year7_2027.geojson
+     1304  2026-02-02 03:16   Secondary_Integrated_Year7_2027.id
+   901120  2026-02-02 03:16   Secondary_Integrated_Year7_2027.map
+      246  2025-10-31 05:02   Secondary_Integrated_Year7_2027.tab
+   333040  2026-03-06 04:24   Secondary_Integrated_Year8_2027.dat
+  2381619  2026-03-10 00:30   Secondary_Integrated_Year8_2027.geojson
+     1304  2026-02-02 03:19   Secondary_Integrated_Year8_2027.id
+   901120  2026-02-02 03:19   Secondary_Integrated_Year8_2027.map
+      246  2026-01-06 03:43   Secondary_Integrated_Year8_2027.tab
+   333040  2026-03-17 04:00   Secondary_Integrated_Year9_2027.dat
+  2379797  2026-03-17 04:54   Secondary_Integrated_Year9_2027.geojson
+     1304  2026-03-17 04:00   Secondary_Integrated_Year9_2027.id
+   691200  2026-03-17 04:00   Secondary_Integrated_Year9_2027.map
+      246  2026-03-17 03:36   Secondary_Integrated_Year9_2027.tab
+   311599  2026-03-06 04:23   Secondary_Integrated_Year10_2027.dat
+  2361016  2026-03-10 00:31   Secondary_Integrated_Year10_2027.geojson
+     1220  2026-02-02 03:22   Secondary_Integrated_Year10_2027.id
+   864768  2026-02-02 03:22   Secondary_Integrated_Year10_2027.map
+      246  2025-10-31 05:18   Secondary_Integrated_Year10_2027.tab
+   300368  2026-03-06 04:23   Secondary_Integrated_Year11_2027.dat
+  2306930  2026-03-10 00:32   Secondary_Integrated_Year11_2027.geojson
+     1176  2026-02-02 03:32   Secondary_Integrated_Year11_2027.id
+   883200  2026-02-02 03:32   Secondary_Integrated_Year11_2027.map
+      246  2025-11-03 01:37   Secondary_Integrated_Year11_2027.tab
+   297305  2026-03-06 04:22   Secondary_Integrated_Year12_2027.dat
+  2299083  2026-03-10 00:34   Secondary_Integrated_Year12_2027.geojson
+     1164  2026-02-02 03:33   Secondary_Integrated_Year12_2027.id
+   930304  2026-02-02 03:33   Secondary_Integrated_Year12_2027.map
+      246  2026-01-06 22:29   Secondary_Integrated_Year12_2027.tab
+     2236  2026-01-07 05:00   Standalone_juniorsec_2027.dat
+     1085  2026-03-10 00:38   Standalone_juniorsec_2027.geojson
+        8  2026-01-07 04:59   Standalone_juniorsec_2027.id
+     3072  2026-01-07 04:59   Standalone_juniorsec_2027.map
+      246  2026-01-07 04:59   Standalone_juniorsec_2027.tab
+     3257  2026-01-07 05:01   Standalone_seniorsec_2027.dat
+     1538  2026-03-10 00:39   Standalone_seniorsec_2027.geojson
+       12  2026-01-07 04:59   Standalone_seniorsec_2027.id
+     3072  2026-01-07 04:59   Standalone_seniorsec_2027.map
+      246  2026-01-07 04:59   Standalone_seniorsec_2027.tab
+     5299  2026-01-12 03:41   Standalone_singlesex_2027.dat
+    10475  2026-03-10 00:39   Standalone_singlesex_2027.geojson
+       20  2026-01-12 03:41   Standalone_singlesex_2027.id
+     8192  2026-01-12 03:41   Standalone_singlesex_2027.map
+      246  2026-01-07 05:00   Standalone_singlesex_2027.tab
+   714641  2026-03-18 00:48   Primary_Integrated_2027.dat
+  5346544  2026-03-10 00:26   Primary_Integrated_2027.geojson
+     5076  2026-03-18 00:48   Primary_Integrated_2027.id
+  1680896  2026-03-18 00:48   Primary_Integrated_2027.map
+---------                     -------
+ 28985525                     50 files
+== locations head ==
+Education_Sector,Entity_Type,School_No,School_Name,School_Type,School_Status,Address_Line_1,Address_Line_2,Address_Town,Address_State,Address_Postcode,Postal_Address_Line_1,Postal_Address_Line_2,Postal_Town,Postal_State,Postal_Postcode,Full_Phone_No,Region,Area,LGA_ID,LGA_Name,LGA_TYPE,X,Y
+Catholic,2,20,Parade College,Secondary,O,1436 Plenty Road,,BUNDOORA,VIC,3083,1436 Plenty Road,,BUNDOORA,VIC,3083,03 9468 3300,NORTH-WESTERN VICTORIA,North Eastern Melbourne,66,Banyule (C),Metro,145.066978,-37.690178
+Catholic,2,25,Simonds Catholic College,Secondary,O,273 Victoria Street,,WEST MELBOURNE,VIC,3003,273 Victoria Street,,WEST MELBOURNE,VIC,3003,03 9321 9200,SOUTH-WESTERN VICTORIA,Western Melbourne,460,Melbourne (C),Metro,144.952883,-37.805971
+Catholic,2,26,St Mary’s College Melbourne,Secondary,O,11 Westbury Street,,ST KILDA EAST,VIC,3183,PO Box 258,,ST KILDA,VIC,3182,03 9529 6611,SOUTH-EASTERN VICTORIA,Bayside Peninsula,590,Port Phillip (C),Metro,144.997001,-37.859365
+Catholic,2,28,St Patrick's College Ballarat,Secondary,O,1431 Sturt Street,,BALLARAT,VIC,3350,Locked Bag 31,,BALLARAT,VIC,3350,03 5331 1688,SOUTH-WESTERN VICTORIA,Central Highlands,57,Ballarat (C),Non Metro,143.831558,-37.559711
+Catholic,2,29,St Patrick's School,Primary,O,119 Drummond Street South,,BALLARAT,VIC,3350,PO Box 82W,,BALLARAT WEST,VIC,3350,03 5332 7680,SOUTH-WESTERN VICTORIA,Central Highlands,57,Ballarat (C),Non Metro,143.847147,-37.564397
+Catholic,2,30,St Alipius' Parish School,Primary,O,106-108 Vict== Standalone_singlesex_2027.geojson (geojson) ==
+[info] 
+==================================================
+Layer:    Standalone_singlesex_2027
+--------------------------------------------------
+Type:     polygon
+Records:  5
+Bounds:   144.2871112,-38.219829,145.0994157,-37.691912
+CRS:      +proj=longlat +datum=WGS84
+Source:   tmp/zones/Standalone_singlesex_2027.geojson
+
+Attribute data
+---------------+----------------------------------
+ Field         | First value
+---------------+----------------------------------
+ Boundary_Year | '2027'
+ Campus_Name   | 'Matthew Flinders Girls Secondary College'
+ ENTITY_CODE   | 1802201
+ School_Name   | 'Matthew Flinders Girls Secondary College'
+ Year_Level    | '7 to 12'
+---------------+----------------------------------
+
+[proj] Source and destination CRS are the same
+[o] Wrote raw/zones/Standalone_singlesex_2027.json
+== Primary_Integrated_2027.geojson (geojson) ==
+[info] 
+===========================================
+Layer:    Primary_Integrated_2027
+-------------------------------------------
+Type:     polygon
+Records:  1,269
+Bounds:   140.9624089,-39.1366537,149.9774646,-33.9813905
+CRS:      +proj=longlat +datum=WGS84
+Source:   tmp/zones/Primary_Integrated_2027.geojson
+
+Attribute data
+---------------+---------------------------
+ Field         | First value
+---------------+---------------------------
+ Boundary_Year |    2027
+ Campus_Name   | 'Lockwood Primary School'
+ ENTITY_CODE   | 1074401
+ School_Name   | 'Lockwood Primary School'
+ Year_Level    | 'P6'
+---------------+---------------------------
+
+[proj] Source and destination CRS are the same
+[simplify] Repaired 2 intersections
+[o] Wrote raw/zones/Primary_Integrated_2027.json
+== Secondary_Integrated_Year8_2027.geojson (geojson) ==
+[info] 
+=========================================
+Layer:    Secondary_Integrated_Year8_2027
+-----------------------------------------
+Type:     polygon
+Records:  326
+Bounds:   140.9624092,-39.1366537,149.9774646,-33.9813905
+CRS:      +proj=longlat +datum=WGS84
+Source:   tmp/zones/Secondary_Integrated_Year8_2027.geojson
+
+Attribute data
+---------------+------------------------
+ Field         | First value
+---------------+------------------------
+ Boundary_Year | '2027'
+ Campus_Name   | 'Ballarat High School'
+ ENTITY_CODE   | 1754001
+ School_Name   | 'Ballarat High School'
+ Year_Level    | '8'
+---------------+------------------------
+
+[proj] Source and destination CRS are the same
+[o] Wrote raw/zones/Secondary_Integrated_Year8_2027.json
+== Standalone_seniorsec_2027.geojson (geojson) ==
+[info] 
+==================================================
+Layer:    Standalone_seniorsec_2027
+--------------------------------------------------
+Type:     polygon
+Records:  3
+Bounds:   145.0142781,-37.8370583,145.1265477,-37.7290914
+CRS:      +proj=longlat +datum=WGS84
+Source:   tmp/zones/Standalone_seniorsec_2027.geojson
+
+Attribute data
+---------------+----------------------------------
+ Field         | First value
+---------------+----------------------------------
+ Boundary_Year | '2027'
+ Campus_Name   | 'Swinburne Senior Secondary College'
+ ENTITY_CODE   | 1736601
+ School_Name   | 'Swinburne Senior Secondary College'
+ Year_Level    | '11 to 12'
+---------------+----------------------------------
+
+[proj] Source and destination CRS are the same
+[o] Wrote raw/zones/Standalone_seniorsec_2027.json
+== Secondary_Integrated_Year7_2027.geojson (geojson) ==
+[info] 
+=========================================
+Layer:    Secondary_Integrated_Year7_2027
+-----------------------------------------
+Type:     polygon
+Records:  326
+Bounds:   140.9624092,-39.1366537,149.9774646,-33.9813905
+CRS:      +proj=longlat +datum=WGS84
+Source:   tmp/zones/Secondary_Integrated_Year7_2027.geojson
+
+Attribute data
+---------------+------------------------
+ Field         | First value
+---------------+------------------------
+ Boundary_Year | '2027'
+ Campus_Name   | 'Ballarat High School'
+ ENTITY_CODE   | 1754001
+ School_Name   | 'Ballarat High School'
+ Year_Level    | '7'
+---------------+------------------------
+
+[proj] Source and destination CRS are the same
+[o] Wrote raw/zones/Secondary_Integrated_Year7_2027.json
+== Secondary_Integrated_Year10_2027.geojson (geojson) ==
+[info] 
+==============================================
+Layer:    Secondary_Integrated_Year10_2027
+----------------------------------------------
+Type:     polygon
+Records:  305
+Bounds:   140.9624092,-39.1366537,149.9774646,-33.9813905
+CRS:      +proj=longlat +datum=WGS84
+Source:   tmp/zones/Secondary_Integrated_Year10_2027.geojson
+
+Attribute data
+---------------+------------------------------
+ Field         | First value
+---------------+------------------------------
+ Boundary_Year | '2027'
+ Campus_Name   | 'Pakenham Secondary College'
+ ENTITY_CODE   | 1822301
+ School_Name   | 'Pakenham Secondary College'
+ Year_Level    | '10'
+---------------+------------------------------
+
+[proj] Source and destination CRS are the same
+[o] Wrote raw/zones/Secondary_Integrated_Year10_2027.json
+== Secondary_Integrated_Year11_2027.geojson (geojson) ==
+[info] 
+==============================================
+Layer:    Secondary_Integrated_Year11_2027
+----------------------------------------------
+Type:     polygon
+Records:  293
+Bounds:   140.9624089,-39.1366534,149.9774646,-33.9813899
+CRS:      +proj=longlat +datum=WGS84
+Source:   tmp/zones/Secondary_Integrated_Year11_2027.geojson
+
+Attribute data
+---------------+------------------------------
+ Field         | First value
+---------------+------------------------------
+ Boundary_Year | '2027'
+ Campus_Name   | 'Pakenham Secondary College'
+ ENTITY_CODE   | 1822301
+ School_Name   | 'Pakenham Secondary College'
+ Year_Level    | '11'
+---------------+------------------------------
+
+[proj] Source and destination CRS are the same
+[o] Wrote raw/zones/Secondary_Integrated_Year11_2027.json
+== Standalone_juniorsec_2027.geojson (geojson) ==
+[info] 
+========================================
+Layer:    Standalone_juniorsec_2027
+----------------------------------------
+Type:     polygon
+Records:  2
+Bounds:   145.2084391,-38.0418599,145.3793725,-37.9598265
+CRS:      +proj=longlat +datum=WGS84
+Source:   tmp/zones/Standalone_juniorsec_2027.geojson
+
+Attribute data
+---------------+------------------------
+ Field         | First value
+---------------+------------------------
+ Boundary_Year | '2027'
+ Campus_Name   | 'Timbarra P-9 College'
+ ENTITY_CODE   | 1547901
+ School_Name   | 'Timbarra P-9 College'
+ Year_Level    | '7 to 9'
+---------------+------------------------
+
+[proj] Source and destination CRS are the same
+[o] Wrote raw/zones/Standalone_juniorsec_2027.json
+== Secondary_Integrated_Year9_2027.geojson (geojson) ==
+[info] 
+=========================================
+Layer:    Secondary_Integrated_Year9_2027
+-----------------------------------------
+Type:     polygon
+Records:  320
+Bounds:   140.9624162,-39.1366406,149.9774697,-33.981377
+CRS:      +proj=longlat +datum=WGS84
+Source:   tmp/zones/Secondary_Integrated_Year9_2027.geojson
+
+Attribute data
+---------------+------------------------
+ Field         | First value
+---------------+------------------------
+ Boundary_Year | '2027'
+ Campus_Name   | 'Ballarat High School'
+ ENTITY_CODE   | 1754001
+ School_Name   | 'Ballarat High School'
+ Year_Level    | '9'
+---------------+------------------------
+
+[proj] Source and destination CRS are the same
+[o] Wrote raw/zones/Secondary_Integrated_Year9_2027.json
+== Secondary_Integrated_Year12_2027.geojson (geojson) ==
+[info] 
+==============================================
+Layer:    Secondary_Integrated_Year12_2027
+----------------------------------------------
+Type:     polygon
+Records:  291
+Bounds:   140.9624092,-39.1366537,149.9774646,-33.9813905
+CRS:      +proj=longlat +datum=WGS84
+Source:   tmp/zones/Secondary_Integrated_Year12_2027.geojson
+
+Attribute data
+---------------+------------------------------
+ Field         | First value
+---------------+------------------------------
+ Boundary_Year | '2027'
+ Campus_Name   | 'Pakenham Secondary College'
+ ENTITY_CODE   | 1822301
+ School_Name   | 'Pakenham Secondary College'
+ Year_Level    | '12'
+---------------+------------------------------
+
+[proj] Source and destination CRS are the same
+[o] Wrote raw/zones/Secondary_Integrated_Year12_2027.json
+total 2156
+drwxr-xr-x 2 runner runner   4096 Nov  6 23:34 .
+drwxr-xr-x 3 runner runner   4096 Nov  6 23:34 ..
+-rw-r--r-- 1 runner runner 749299 Nov  6 23:34 Primary_Integrated_2027.json
+-rw-r--r-- 1 runner runner 237510 Nov  6 23:34 Secondary_Integrated_Year10_2027.json
+-rw-r--r-- 1 runner runner 230346 Nov  6 23:34 Secondary_Integrated_Year11_2027.json
+-rw-r--r-- 1 runner runner 229100 Nov  6 23:34 Secondary_Integrated_Year12_2027.json
+-rw-r--r-- 1 runner runner 245627 Nov  6 23:34 Secondary_Integrated_Year7_2027.json
+-rw-r--r-- 1 runner runner 245627 Nov  6 23:34 Secondary_Integrated_Year8_2027.json
+-rw-r--r-- 1 runner runner 243282 Nov  6 23:34 Secondary_Integrated_Year9_2027.json
+-rw-r--r-- 1 runner runner    701 Nov  6 23:34 Standalone_juniorsec_2027.json
+-rw-r--r-- 1 runner runner   1127 Nov  6 23:34 Standalone_seniorsec_2027.json
+-rw-r--r-- 1 runner runner   2052 Nov  6 23:34 Standalone_singlesex_2027.json

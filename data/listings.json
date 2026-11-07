@@ -1,0 +1,199 @@
+{
+  "contact": {
+    "name": "Frank",
+    "phone": "0431438595",
+    "wechat": "",
+    "note": "status: live = 公开显示；draft = 只在 rentals.html?preview=1 显示，等补齐租金、入住日期、照片再改成 live"
+  },
+  "listings": [
+    {
+      "id": "2110-spencer",
+      "status": "live",
+      "title": "Spencer St · 两房一卫公寓",
+      "address": "2110/138 Spencer St, Melbourne VIC 3000",
+      "suburb": "Melbourne CBD",
+      "beds": 2,
+      "baths": 1,
+      "cars": 0,
+      "rentWeekly": null,
+      "available": "尽快",
+      "furnished": null,
+      "photos": [
+        "photos/2110-spencer-1.jpg",
+        "photos/2110-spencer-2.jpg",
+        "photos/2110-spencer-3.jpg",
+        "photos/2110-spencer-4.jpg",
+        "photos/2110-spencer-5.jpg",
+        "photos/2110-spencer-6.jpg",
+        "photos/2110-spencer-7.jpg",
+        "photos/2110-spencer-8.jpg"
+      ],
+      "highlights": [
+        "Southern Cross 火车站步行可达",
+        "免费电车区内"
+      ],
+      "desc": "Premier Tower 高层两房一卫，大落地窗，晚上能看墨尔本城市夜景。\n\n🏠 房子\n· 两间卧室，主卧转角落地窗，景观开阔\n· 开放式客厅和厨房，采光好\n· 带书桌角，适合在家学习、办公\n· 室内洗衣机、烘干机\n\n🚉 交通和周边\n· 步行到 Southern Cross 火车站，去机场 SkyBus 就在站里\n· 位于免费电车区，CBD 内坐电车免费\n· 周边餐厅、超市多，生活方便\n\n适合上班族、留学生或两人合租。欢迎联系预约看房。"
+    },
+    {
+      "id": "3005-latrobe",
+      "status": "live",
+      "title": "La Trobe St · 一房一卫公寓",
+      "address": "3005/327 La Trobe St, Melbourne VIC 3000",
+      "suburb": "Melbourne CBD",
+      "beds": 1,
+      "baths": 1,
+      "cars": 0,
+      "rentWeekly": null,
+      "available": "尽快",
+      "furnished": null,
+      "photos": [
+        "photos/3005-latrobe-1.jpg",
+        "photos/3005-latrobe-2.jpg",
+        "photos/3005-latrobe-3.jpg",
+        "photos/3005-latrobe-4.jpg",
+        "photos/3005-latrobe-5.jpg",
+        "photos/3005-latrobe-6.jpg",
+        "photos/3005-latrobe-7.jpg",
+        "photos/3005-latrobe-8.jpg",
+        "photos/3005-latrobe-9.jpg",
+        "photos/3005-latrobe-10.jpg",
+        "photos/3005-latrobe-11.jpg",
+        "photos/3005-latrobe-12.jpg"
+      ],
+      "highlights": [
+        "免费电车区内",
+        "近 RMIT、墨大、State Library"
+      ],
+      "desc": "La Trobe St 高层一房一卫，整面落地窗正对城市天际线，白天采光很好。\n\n🏠 房子\n· 独立卧室\n· 开放式客厅、厨房，带餐桌\n· 室内洗衣机\n· 高层视野开阔\n\n🚉 交通和周边\n· 位于免费电车区\n· 步行可到 Flagstaff 火车站、Queen Victoria Market、State Library\n· 去 RMIT、墨尔本大学都很方便\n\n适合留学生、上班族一人或情侣入住。欢迎联系预约看房。"
+    },
+    {
+      "id": "4803b-wsp",
+      "status": "live",
+      "title": "West Side Place · 两房一卫高层公寓",
+      "address": "4803B/639 Little Lonsdale St, Melbourne VIC 3000",
+      "suburb": "Melbourne CBD",
+      "beds": 2,
+      "baths": 1,
+      "cars": null,
+      "rentWeekly": null,
+      "available": "尽快",
+      "furnished": null,
+      "photos": [
+        "photos/4803b-wsp-1.jpg",
+        "photos/4803b-wsp-2.jpg",
+        "photos/4803b-wsp-3.jpg",
+        "photos/4803b-wsp-4.jpg",
+        "photos/4803b-wsp-5.jpg",
+        "photos/4803b-wsp-6.jpg",
+        "photos/4803b-wsp-7.jpg",
+        "photos/4803b-wsp-8.jpg",
+        "photos/4803b-wsp-9.jpg"
+      ],
+      "highlights": [
+        "West Side Place",
+        "楼内泳池、健身房",
+        "近 Southern Cross 站"
+      ],
+      "desc": "West Side Place 48 层两房一卫，客厅连阳台，城市景观。\n\n🏠 房子\n· 两间卧室：一间大床房，一间单人床房，适合合租或带孩子\n· 开放式厨房，岛台式厨柜，燃气灶\n· 客厅连阳台，采光好\n· 室内洗衣机\n\n🏊 楼内设施\n· West Side Place 酒店式公寓楼，有泳池、健身房\n\n🚉 交通和周边\n· 正对 Southern Cross 火车站，位于免费电车区\n\n欢迎联系预约看房。"
+    },
+    {
+      "id": "6309d-lonsdale",
+      "status": "live",
+      "title": "West Side Place · 63 层一房一卫（另有小书房）",
+      "address": "6309D/648 Lonsdale St, Melbourne VIC 3000",
+      "suburb": "Melbourne CBD",
+      "beds": 1,
+      "baths": 1,
+      "cars": null,
+      "rentWeekly": null,
+      "available": "2027 年 1 月",
+      "furnished": null,
+      "photos": [
+        "photos/6309d-lonsdale-1.jpg",
+        "photos/6309d-lonsdale-2.jpg",
+        "photos/6309d-lonsdale-3.jpg",
+        "photos/6309d-lonsdale-4.jpg",
+        "photos/6309d-lonsdale-5.jpg",
+        "photos/6309d-lonsdale-6.jpg",
+        "photos/6309d-lonsdale-7.jpg",
+        "photos/6309d-lonsdale-8.jpg",
+        "photos/6309d-lonsdale-9.jpg",
+        "photos/6309d-lonsdale-10.jpg",
+        "photos/6309d-lonsdale-11.jpg",
+        "photos/6309d-lonsdale-12.jpg",
+        "photos/6309d-lonsdale-13.jpg",
+        "photos/6309d-lonsdale-14.jpg"
+      ],
+      "highlights": [
+        "63 层全景落地窗",
+        "楼内泳池、健身房",
+        "正对 Southern Cross 站"
+      ],
+      "desc": "West Side Place 63 层一房一卫，另有一间小书房，全景落地窗。\n\n🏠 房子\n· 独立卧室，落地窗夜景\n· 另有一间小书房，可做书房或放单人床\n· 开放式客厅和厨房，带岛台\n· 室内洗衣机、烘干机\n\n🏊 楼内设施\n· 室内泳池、健身房、住户休息区\n\n🚉 交通和周边\n· 正对 Southern Cross 火车站，位于免费电车区\n\n2027 年 1 月可入住，欢迎提前联系看房。"
+    },
+    {
+      "id": "3817-victoria",
+      "status": "live",
+      "title": "Carlton · 38 层一房一卫高层公寓",
+      "address": "3817/160 Victoria St, Carlton VIC 3053",
+      "suburb": "Carlton",
+      "beds": 1,
+      "baths": 1,
+      "cars": null,
+      "rentWeekly": null,
+      "available": "2027 年 1 月",
+      "furnished": null,
+      "photos": [
+        "photos/3817-victoria-1.jpg",
+        "photos/3817-victoria-2.jpg",
+        "photos/3817-victoria-3.jpg",
+        "photos/3817-victoria-4.jpg",
+        "photos/3817-victoria-5.jpg",
+        "photos/3817-victoria-6.jpg",
+        "photos/3817-victoria-7.jpg",
+        "photos/3817-victoria-8.jpg",
+        "photos/3817-victoria-9.jpg",
+        "photos/3817-victoria-10.jpg",
+        "photos/3817-victoria-11.jpg",
+        "photos/3817-victoria-12.jpg"
+      ],
+      "highlights": [
+        "步行到墨尔本大学",
+        "近 Queen Victoria Market"
+      ],
+      "desc": "Carlton 38 层一房一卫，落地窗朝向城市，能看到 CBD 天际线和日落。\n\n🏠 房子\n· 独立卧室\n· 开放式客厅、厨房，带岛台\n· 室内洗衣机\n\n🚉 交通和周边\n· 步行到墨尔本大学、RMIT\n· 走路就到 Queen Victoria Market、Lygon St 意大利街\n· 附近多条电车线，去 CBD 很快\n\n适合留学生。2027 年 1 月可入住，欢迎提前联系看房。"
+    },
+    {
+      "id": "2801b-wsp",
+      "status": "live",
+      "title": "West Side Place · 两房一卫高层公寓",
+      "address": "2801B/639 Little Lonsdale St, Melbourne VIC 3000",
+      "suburb": "Melbourne CBD",
+      "beds": 2,
+      "baths": 1,
+      "cars": 0,
+      "rentWeekly": null,
+      "available": "2027 年 1 月",
+      "furnished": null,
+      "photos": [
+        "photos/2801b-wsp-1.jpg",
+        "photos/2801b-wsp-2.jpg",
+        "photos/2801b-wsp-3.jpg",
+        "photos/2801b-wsp-4.jpg",
+        "photos/2801b-wsp-5.jpg",
+        "photos/2801b-wsp-6.jpg",
+        "photos/2801b-wsp-7.jpg",
+        "photos/2801b-wsp-11.jpg",
+        "photos/2801b-wsp-8.jpg",
+        "photos/2801b-wsp-9.jpg",
+        "photos/2801b-wsp-10.jpg"
+      ],
+      "highlights": [
+        "West Side Place",
+        "楼内泳池、健身房",
+        "近 Southern Cross 站"
+      ],
+      "desc": "West Side Place 28 层两房一卫，客厅大落地窗，可以看日落。\n\n🏠 房子\n· 两间卧室\n· 开放式客厅、餐厅、厨房\n· 室内洗衣机\n\n🏊 楼内设施\n· 泳池、健身房\n\n🚉 交通和周边\n· 正对 Southern Cross 火车站，位于免费电车区\n\n2027 年 1 月可入住，欢迎提前联系看房。"
+    }
+  ]
+}

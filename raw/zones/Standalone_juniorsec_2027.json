@@ -1,0 +1,4 @@
+{"type":"FeatureCollection", "features": [
+{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[145.31724,-38.04186],[145.33822,-38.03333],[145.37937,-37.9636],[145.33204,-37.97222],[145.29801,-38.02864],[145.31724,-38.04186]]]},"properties":{"ENTITY_CODE":1547901,"School_Name":"Timbarra P-9 College","Campus_Name":"Timbarra P-9 College","Year_Level":"7 to 9","Boundary_Year":"2027"}},
+{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[145.20844,-38.02207],[145.26179,-37.98474],[145.23414,-37.96725],[145.20844,-38.02207]]]},"properties":{"ENTITY_CODE":1890501,"School_Name":"Doveton College","Campus_Name":"Doveton College","Year_Level":"7 to 9","Boundary_Year":"2027"}}
+]}

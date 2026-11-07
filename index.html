@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>好租 Howzu · 墨尔本查学区、租房、投资测算</title>
+<link rel="icon" href="favicon.ico" sizes="32x32"><link rel="icon" href="icons/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0f6b4f"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="好租"><meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="description" content="输入墨尔本地址，马上查对口公立小学、中学学区，周边学校，VCE 成绩和排名。2027 年最新学区数据。">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="css/site.css?v=20261107">
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1d2321;--muted:#6b726f;--line:#e4e1d8;--accent:#0f6b4f;--accent2:#e8f3ee;--warn:#9a5b00;--warnbg:#fff6e5}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+main{max-width:760px;margin:0 auto;padding:14px}
+main.wide{max-width:1760px;padding:22px 20px;display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:22px;align-items:start}
+.colA,.colB{min-width:0}
+.colB{position:sticky;top:76px;max-height:calc(100vh - 92px);overflow:auto;scrollbar-width:thin}
+.searchcard{padding:20px;box-shadow:0 6px 24px rgba(15,107,79,.08)}
+.searchcard .search input{font-size:17px;padding:14px 16px}
+.searchcard .search button{padding:14px 22px;font-size:16px}
+.card{box-shadow:0 1px 2px rgba(0,0,0,.03)}
+@media (min-width:1000px){#map{height:420px}}
+@media (max-width:999px){main.wide{grid-template-columns:1fr;max-width:760px;padding:14px}.colB{position:static;max-height:none;overflow:visible}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.search{display:flex;gap:8px}
+.search input{flex:1;font-size:16px;padding:12px;border:1px solid var(--line);border-radius:10px;min-width:0}
+button{font-size:15px;padding:12px 16px;border:0;border-radius:10px;background:var(--accent);color:#fff;cursor:pointer;white-space:nowrap}
+button.ghost{background:var(--accent2);color:var(--accent)}
+.row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.hint{font-size:13px;color:var(--muted);margin-top:8px}
+#suggest{margin-top:8px}
+#suggest div{padding:10px;border-bottom:1px solid var(--line);cursor:pointer;font-size:14px}
+#suggest div:hover{background:var(--accent2)}
+#map{height:300px;border-radius:12px;margin-top:12px;display:none}
+h2{font-size:17px;margin:0 0 10px}
+.zone{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px}
+.zone .tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:20px;background:var(--accent2);color:var(--accent);margin-bottom:4px}
+.zone .name{font-size:17px;font-weight:600}
+.zone .meta{font-size:13px;color:var(--muted)}
+.stats{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
+.stat{background:var(--bg);border-radius:10px;padding:8px 10px;min-width:90px}
+.stat b{display:block;font-size:20px}
+.stat span{font-size:12px;color:var(--muted)}
+.none{color:var(--warn);background:var(--warnbg);border-radius:10px;padding:10px;font-size:14px}
+.tabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.tabs button{padding:7px 12px;font-size:13px;background:var(--bg);color:var(--ink)}
+.tabs button.on{background:var(--accent);color:#fff}
+.list .item{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.list .item:last-child{border-bottom:0}
+.list .l{min-width:0}
+.list .n{font-weight:600;font-size:15px}
+.list .s{font-size:12px;color:var(--muted)}
+.list .r{text-align:right;font-size:13px;white-space:nowrap}
+.list .r b{font-size:15px;color:var(--accent)}
+.list .r small{color:var(--muted)}
+.nr{color:var(--muted);font-weight:600}
+details.fee{margin-top:4px;font-size:13px}
+.feelink{display:inline-block;margin-top:3px;font-size:13px;color:#a24b0b;text-decoration:none;font-weight:600}
+details.fee summary{cursor:pointer;color:#a24b0b;font-weight:600}
+details.fee table{width:100%;max-width:320px;border-collapse:collapse;margin:6px 0;font-size:13px}
+details.fee td{padding:2px 0;border-bottom:1px solid var(--line)}
+.chips{margin:3px 0 2px}
+.chip{display:inline-block;font-size:12px;padding:1px 8px;border-radius:20px;background:var(--bg);margin-right:4px}
+.chip.Government{background:#e8f3ee;color:#0f6b4f}
+.chip.Independent{background:#efe9fb;color:#5b3fa0}
+.chip.Catholic{background:#fdeee2;color:#a24b0b}
+label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
+.f input,.f select,.f textarea{width:100%;font-size:16px;padding:10px;border:1px solid var(--line);border-radius:10px;font-family:inherit;background:#fff}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+.note{font-size:12px;color:var(--muted)}
+.note a{color:var(--accent)}
+.ok{background:var(--accent2);color:var(--accent);padding:12px;border-radius:10px;margin-top:10px;font-size:14px;white-space:pre-wrap}
+#rankSearch{width:100%;font-size:16px;padding:10px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px}
+.hidden{display:none}
+footer{max-width:1760px;margin:0 auto;padding:4px 20px 30px}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="in">
+  <a class="logo" href="index.html"><i>好</i>好租 Howzu<small>墨尔本 · 学区 · 租房 · 投资</small></a>
+  <div class="links"><a href="index.html" class="on">🏫 查学区</a><a href="rentals.html">🏠 在租房源</a><a href="invest.html">📈 投资测算</a></div>
+  <a class="post" href="post.html">＋ 免费发房源</a>
+</div></nav>
+<header class="hero"><div class="in"><h1>在墨尔本找房，先查学区</h1><p>输入地址，马上知道对口哪所公立学校、周边有哪些学校、VCE 成绩和排名。2027 年最新学区数据。</p></div></header>
+<main class="wide"><div class="colA">
+  <section class="card searchcard">
+    <div class="search">
+      <input id="q" placeholder="输入地址或区名，如 Balwyn North" autocomplete="off" enterkeyhint="search">
+      <button id="go">查询</button>
+    </div>
+    <div class="row">
+      <button class="ghost" id="me">📍 用我现在的位置</button>
+    </div>
+    <div id="suggest"></div>
+    <div class="hint" id="status">数据：2027 年维州政府学区（2027 年 1 月起生效）＋ 2025 年 VCE 成绩</div>
+    <div id="map"></div>
+  </section>
+
+  <section class="card hidden" id="zoneCard">
+    <h2>对口公立学校（学区）</h2>
+    <div id="zones"></div>
+    <div class="note">有学区 = 住在这里就<b>有权入读</b>这所公立学校。精英中学（MacRob、Melbourne High、Nossal、Suzanne Cory 等）和私校不分学区，靠考试或报名。</div>
+  </section>
+
+  <section class="card hidden" id="nearCard">
+    <h2 id="nearTitle">周边 3 公里内的学校</h2>
+    <div id="nearTabs"></div>
+    <p class="note">澳洲没有单独的“高中”：中学是 7–12 年级，11–12 年级就是高中阶段（考 VCE）。排名按 2025 年 VCE 中位分，全州共 <span id="rt"></span> 所学校参与排名。</p>
+    <div class="list" id="near"></div>
+  </section>
+
+
+  <section class="card">
+    <h2>VCE 成绩排名（2025）</h2>
+    <p class="note" style="margin-top:-4px">按 VCAA 公布的 VCE 中位分排序，同分按 40 分以上比例。只计有 VCE 毕业生、20 人以上的学校。</p>
+    <input id="rankSearch" placeholder="搜学校名，如 Balwyn High">
+    <div class="list" id="rank"></div>
+    <div class="row"><button class="ghost" id="more">显示更多</button></div>
+  </section>
+</div><aside class="colB">
+  <section class="card" id="feeCard">
+    <h2>公立学校学费计算器</h2>
+    <p class="note" style="margin-top:-4px">按签证类型算孩子上维州公立学校每年要交多少学费。</p>
+    <form class="f" id="fee" onsubmit="return false">
+      <label>孩子（或父母）的签证</label>
+      <select id="visa">
+        <optgroup label="免学费">
+          <option value="free|公民">澳洲公民 / 新西兰公民</option>
+          <option value="free|PR">永久居民 PR（189、190、186、191、887 等）</option>
+          <option value="free|partner">配偶签证（309、820、100、801）</option>
+          <option value="free|work">工作签证 482（Skills in Demand）/ 457 / 494 / 491</option>
+          <option value="free|485">毕业生工签 485</option>
+          <option value="free|188">商业投资签证 188 / 888</option>
+          <option value="free|phd">父母读博士（500 研究型）或拿政府奖学金</option>
+        </optgroup>
+        <optgroup label="要交学费">
+          <option value="dep|500" selected>父母持学生签证 500 读本科 / 硕士 / TAFE / 语言（孩子随行）</option>
+          <option value="std|500s">孩子自己持学生签证 500（留学生，可配监护签证 590）</option>
+          <option value="tmp|visitor">旅游签证 600 / 打工度假 417、462</option>
+          <option value="tmp|parent">父母类临时签证 870 / 173 / 884</option>
+        </optgroup>
+        <optgroup label="其他">
+          <option value="bridge|bv">过桥签证（Bridging）</option>
+        </optgroup>
+      </select>
+      <label>年级</label>
+      <select id="lvl">
+        <option value="0">小学 Prep–6 年级</option>
+        <option value="1">初中 7–10 年级</option>
+        <option value="2">高中 11–12 年级（VCE）</option>
+      </select>
+    </form>
+    <div id="feeOut" style="margin-top:12px"></div>
+    <p class="note">学费来源：维州教育部 International Student Program 2026、2027 年官方收费表，及“签证类型对照表”。具体以 <a href="https://www.study.vic.gov.au/en/international-student-program/support-and-payments/school-fees" target="_blank" rel="noopener">study.vic.gov.au</a> 为准。私立学校学费各校不同，在学校列表里点“查学费”。</p>
+  </section>
+
+  <section class="card" id="leadCard">
+    <h2>想租这个学区的房子？</h2>
+    <p class="note" style="margin-top:-4px">留下需求，有合适房源第一时间通知你。海外人士现在不能买二手房（禁令延长到 2029 年 6 月 30 日），租学区房是进好学校最直接的方式。</p>
+    <form class="f" id="lead">
+      <label>想要的学区 / 学校</label>
+      <input name="school" id="leadSchool" placeholder="如 Balwyn High School">
+      <div class="grid">
+        <div><label>房型</label>
+          <select name="beds"><option>1 房</option><option>2 房</option><option selected>3 房</option><option>4 房以上</option></select></div>
+        <div><label>每周预算（澳元）</label><input name="budget" inputmode="numeric" placeholder="如 800"></div>
+      </div>
+      <div class="grid">
+        <div><label>入住时间</label><input name="when" placeholder="如 2027 年 1 月"></div>
+        <div><label>孩子年级</label><input name="grade" placeholder="如 7 年级"></div>
+      </div>
+      <label>联系方式（微信号或手机）</label>
+      <input name="contact" required placeholder="必填">
+      <label>其他要求</label>
+      <textarea name="other" rows="2" placeholder="如 带车位、可养宠物"></textarea>
+      <div class="row"><button type="submit">提交需求</button></div>
+      <div id="leadOk" class="ok hidden"></div>
+    </form>
+  </section>
+
+</aside>
+</main>
+<footer class="note">
+  <p><b>重要提示：</b>学区每年可能调整，入学前请以维州教育部官网 <a href="https://www.findmyschool.vic.gov.au" target="_blank" rel="noopener">findmyschool.vic.gov.au</a> 为准。政府说明学区数据不应作为买房决策的唯一依据。VCE 中位分只反映学校的一个方面，不代表学校整体好坏。</p>
+  <p>数据来源：学区和学校位置 © State of Victoria (Department of Education)，<a href="https://discover.data.vic.gov.au/dataset/victorian-government-school-zones-2027" target="_blank" rel="noopener">DataVic</a>，CC BY 4.0；VCE 数据 © Victorian Curriculum and Assessment Authority，详见 <a href="https://www.vcaa.vic.edu.au" target="_blank" rel="noopener">www.vcaa.vic.edu.au</a>；地址查询和地图 © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors。</p>
+  <p id="built"></p>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// Where lead submissions go. Empty = show a copyable summary only.
+const LEAD_ENDPOINT = "";
+
+const $ = s => document.querySelector(s);
+const SECTOR = {Government:"公立", Catholic:"天主教", Independent:"私立"};
+const SECTOR_LONG = {Government:"公立", Catholic:"天主教私立", Independent:"私立"};
+const TYPE = {Primary:"小学", Secondary:"中学（含高中）", "Pri/Sec":"一贯制（小学到高中）", Special:"特殊学校", Language:"语言学校"};
+const YEARS = {Primary:"Prep–6 年级", Secondary:"7–12 年级", "Pri/Sec":"Prep–12 年级"};
+const AREA_TYPES = ["suburb","city","town","village","postcode","neighbourhood","quarter","municipality","city_district","county","hamlet","locality","district"];
+let nearLevel = "all", nearSort = "dist", place = null;
+let D = {}, map, layers = [], nearData = [], nearFilter = "all", rankShown = 30;
+
+async function load(){
+  const [zp, zs, sc, meta] = await Promise.all(
+    ["zones_primary","zones_secondary","schools","meta"].map(n => fetch(`data/${n}.json`).then(r=>r.json())));
+  zp.features.forEach(prepBBox); zs.features.forEach(prepBBox);
+  D = {zp, zs, sc, meta, byNo: Object.fromEntries(sc.map(s=>[s.no,s]))};
+  try{ const fees = await fetch("data/fees.json").then(r=>r.ok?r.json():{});
+    for(const [no,f] of Object.entries(fees)) if(f.found && f.max_annual_aud && D.byNo[no]) D.byNo[no].fee=f; }catch(_){}
+  $("#rt").textContent = meta.vce_ranked_total;
+  $("#built").textContent = `学区年份 ${meta.zones_year}｜VCE 年份 ${meta.vce_year}｜数据更新 ${meta.built}`;
+  renderRank();
+}
+
+function prepBBox(f){
+  let a=[180,90,-180,-90];
+  const polys = f.geometry.type==="Polygon" ? [f.geometry.coordinates] : f.geometry.coordinates;
+  polys.forEach(p=>p[0].forEach(([x,y])=>{a[0]=Math.min(a[0],x);a[1]=Math.min(a[1],y);a[2]=Math.max(a[2],x);a[3]=Math.max(a[3],y)}));
+  f.bbox=a; f.polys=polys;
+}
+function inRing(x,y,ring){
+  let inside=false;
+  for(let i=0,j=ring.length-1;i<ring.length;j=i++){
+    const [xi,yi]=ring[i],[xj,yj]=ring[j];
+    if(((yi>y)!==(yj>y)) && (x < (xj-xi)*(y-yi)/(yj-yi)+xi)) inside=!inside;
+  }
+  return inside;
+}
+function inFeature(f,x,y){
+  const b=f.bbox; if(x<b[0]||x>b[2]||y<b[1]||y>b[3]) return false;
+  return f.polys.some(p => inRing(x,y,p[0]) && !p.slice(1).some(h=>inRing(x,y,h)));
+}
+function km(a,b,c,d){const R=6371,t=Math.PI/180,dl=(c-a)*t,dn=(d-b)*t;
+  const h=Math.sin(dl/2)**2+Math.cos(a*t)*Math.cos(c*t)*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(h));}
+
+async function geocode(q){
+  const url = "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&countrycodes=au&addressdetails=0&viewbox=140.9,-34,150,-39.2&bounded=1&q="+encodeURIComponent(q);
+  try{ const r = await fetch(url,{headers:{"Accept-Language":"en"}}); if(r.ok){const j=await r.json(); if(j.length) return j.map(x=>({lat:+x.lat,lng:+x.lon,label:x.display_name,area:AREA_TYPES.includes(x.addresstype||x.type),name:x.name}));} }catch(e){}
+  try{ const r = await fetch("https://photon.komoot.io/api/?limit=5&lat=-37.81&lon=144.96&bbox=140.9,-39.2,150,-34&q="+encodeURIComponent(q));
+    const j = await r.json();
+    return j.features.map(f=>({lng:f.geometry.coordinates[0],lat:f.geometry.coordinates[1],
+      area:AREA_TYPES.includes(f.properties.type)&&!f.properties.housenumber,name:f.properties.name,label:[f.properties.housenumber,f.properties.street||f.properties.name,f.properties.city||f.properties.district,f.properties.postcode].filter(Boolean).join(", ")}));
+  }catch(e){ return []; }
+}
+
+async function search(){
+  const q=$("#q").value.trim(); if(!q) return;
+  if(!D.sc){ $("#status").textContent="数据加载中，请稍候…"; await ready; }
+  $("#status").textContent="正在查找地址…"; $("#suggest").innerHTML="";
+  const res = await geocode(/vic|victoria|\b3\d{3}\b/i.test(q) ? q : q+", Victoria");
+  if(!res.length){ $("#status").textContent="没找到这个地址，试试加上区名或邮编，比如 “12 Smith St, Box Hill 3128”"; return; }
+  if(res.length===1) return show(res[0]);
+  $("#status").textContent="请选择你要的地址：";
+  res.forEach(r=>{const d=document.createElement("div");d.textContent=r.label;d.onclick=()=>{$("#suggest").innerHTML="";show(r)};$("#suggest").appendChild(d);});
+}
+
+function show(p){
+  $("#status").textContent = p.label; place = p;
+  const zp = D.zp.features.filter(f=>inFeature(f,p.lng,p.lat));
+  const zs = D.zs.features.filter(f=>inFeature(f,p.lng,p.lat));
+  drawMap(p, zp, zs);
+  let h="";
+  if(p.area) h+=`<div class="none">你输入的是一个区域，这里显示的是<b>区中心点</b>的学区。同一个区内不同街道可能对口不同学校，请输入具体门牌地址确认。</div>`;
+  if(!zp.length && !zs.length) h+=`<div class="none">这个位置不在任何公立学校学区内（可能不在维州，或地址定位有偏差）。</div>`;
+  zs.forEach(f=>h+=zoneHTML(f,"中学学区"));
+  zp.forEach(f=>h+=zoneHTML(f,"小学学区"));
+  if(!zs.length && zp.length) h+=`<div class="none">没找到对应的中学学区，请到 findmyschool 官网核实。</div>`;
+  $("#zones").innerHTML=h; $("#zoneCard").classList.remove("hidden");
+  if(zs[0]) $("#leadSchool").value = zs[0].properties.name;
+  const town = p.area && p.name ? p.name.toLowerCase() : null;
+  nearData = D.sc.map(s=>({...s,d:km(p.lat,p.lng,s.lat,s.lng),inTown: town && s.addr.toLowerCase().includes(", "+town+" ")}))
+    .filter(s=>(s.d<=3 || s.inTown) && s.type!=="Language");
+  $("#nearTitle").textContent = p.area && p.name ? `${p.name} 区内及周边 3 公里的学校` : "周边 3 公里内的学校";
+  renderNear(); $("#nearCard").classList.remove("hidden");
+  $("#zoneCard").scrollIntoView({behavior:"smooth"});
+}
+
+function zoneHTML(f,tag){
+  const pr=f.properties, s=D.byNo[pr.no];
+  const campus = pr.campus && pr.campus!==pr.name ? `（${pr.campus}）`:"";
+  let stats="";
+  if(s && s.vce_med){
+    stats=`<div class="stats">
+      <div class="stat"><b>${s.vce_med}</b><span>VCE 中位分</span></div>
+      <div class="stat"><b>${s.vce_p40??"-"}%</b><span>40 分以上比例</span></div>
+      ${s.vce_rank?`<div class="stat"><b>${s.vce_rank}</b><span>全州 ${D.meta.vce_ranked_total} 所中排名</span></div>`:""}
+    </div>`;
+  }
+  return `<div class="zone"><span class="tag">${tag}</span>
+    <div class="name">${pr.name}${campus}</div>
+    <div class="meta">${s?s.addr:""}${s&&s.phone?" · "+s.phone:""}</div>${stats}${s?feeHTML(s):""}</div>`;
+}
+
+function renderNear(){
+  const groups=[
+    [["all","全部"],["Government","公立"],["Independent","私立"],["Catholic","天主教"]],
+    [["all","全部年级"],["pri","小学"],["sec","中学 / 高中"]],
+    [["dist","按距离"],["rank","按排名"]]];
+  const cur=[nearFilter,nearLevel,nearSort];
+  $("#nearTabs").innerHTML=groups.map((g,gi)=>`<div class="tabs">`+g.map(([k,v])=>`<button class="${k===cur[gi]?"on":""}" data-g="${gi}" data-k="${k}">${v}</button>`).join("")+`</div>`).join("");
+  $("#nearTabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{const k=b.dataset.k;
+    if(b.dataset.g==="0")nearFilter=k; else if(b.dataset.g==="1")nearLevel=k; else nearSort=k; renderNear();});
+  let list = nearData.filter(s=>(nearFilter==="all"||s.sector===nearFilter)
+    && (nearLevel==="all" || (nearLevel==="pri" ? /Primary|Pri\/Sec/.test(s.type) : /Secondary|Pri\/Sec/.test(s.type))));
+  list.sort(nearSort==="rank" ? (a,b)=>(a.vce_rank||1e9)-(b.vce_rank||1e9)||a.d-b.d : (a,b)=>a.d-b.d);
+  $("#near").innerHTML = list.length ? list.slice(0,60).map(s=>itemHTML(s,`${s.d.toFixed(1)} 公里`)).join("") : `<div class="note">这个范围内没有这类学校。</div>`;
+}
+
+function feeText(s){
+  const f=s.fee; if(!f) return "";
+  const lo=f.min_annual_aud, hi=f.max_annual_aud, r = lo&&lo!==hi ? `${money(lo)}–${money(hi)}` : money(hi);
+  return f.kind==="parent_payment" ? `杂费约 ${r}/年（${f.year}）` : `学费 ${r}/年（${f.year}）`;
+}
+function feeHTML(s){
+  const f=s.fee; if(!f) return "";
+  const rows=(f.levels||[]).filter(l=>l.annual_aud).map(l=>`<tr><td>${l.label}</td><td style="text-align:right">${money(l.annual_aud)}</td></tr>`).join("");
+  return `<details class="fee"><summary>${feeText(s)}</summary>${rows?`<table>${rows}</table>`:""}
+    ${f.note_zh?`<div class="note">${f.note_zh}</div>`:""}
+    <div class="note">${f.includes||""} · <a href="${f.source_url}" target="_blank" rel="noopener">学校官网原文</a> · ${f.checked} 收集，以学校为准</div></details>`;
+}
+function feeLink(s){
+  if(s.sector==="Government") return "";
+  const q=encodeURIComponent(`${s.name} ${new Date().getFullYear()+1} fees schedule`);
+  return `<a class="feelink" href="https://www.google.com/search?q=${q}" target="_blank" rel="noopener">查学费 ›</a>`;
+}
+function itemHTML(s, extra){
+  let r;
+  if(s.vce_rank) r=`<b>第 ${s.vce_rank} 名</b><br>VCE ${s.vce_med} 分`;
+  else if(s.type==="Primary") r=`<span class="nr">无排名</span><br><small>小学不考 VCE</small>`;
+  else if(s.vce_med) r=`<span class="nr">无排名</span><br><small>VCE ${s.vce_med} 分，人数少</small>`;
+  else r=`<span class="nr">无排名</span><br><small>无公开 VCE 数据</small>`;
+  const yrs = YEARS[s.type] ? ` · ${YEARS[s.type]}` : "";
+  return `<div class="item"><div class="l"><div class="n">${s.name}</div>
+    <div class="chips"><span class="chip ${s.sector}">${SECTOR_LONG[s.sector]||s.sector}</span><span class="chip">${TYPE[s.type]||s.type}</span></div>
+    <div class="s">${[YEARS[s.type],extra].filter(Boolean).join(" · ")}</div>${feeHTML(s)||feeLink(s)}</div>
+    <div class="r">${r}</div></div>`;
+}
+
+function renderRank(){
+  const q=$("#rankSearch").value.trim().toLowerCase();
+  const all=D.sc.filter(s=>s.vce_rank).sort((a,b)=>a.vce_rank-b.vce_rank);
+  const list=q?all.filter(s=>(s.name+" "+s.addr).toLowerCase().includes(q)):all;
+  $("#rank").innerHTML=list.slice(0,rankShown).map(s=>itemHTML(s, s.addr.split(", ").slice(-1)[0].replace(/ \d{4}$/,""))).join("")
+    || `<div class="note">“${q}” 附近没有排名内的学校。</div><div class="row"><button id="toZone">查 “${q}” 的学区和周边学校</button></div>`;
+  const tz=$("#toZone"); if(tz) tz.onclick=()=>{$("#q").value=$("#rankSearch").value.trim(); window.scrollTo({top:0,behavior:"smooth"}); search();};
+  $("#more").style.display = list.length>rankShown ? "" : "none";
+}
+
+function drawMap(p,zp,zs){
+  $("#map").style.display="block";
+  if(!map){ map=L.map("map",{scrollWheelZoom:false});
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"© OpenStreetMap"}).addTo(map); }
+  layers.forEach(l=>map.removeLayer(l)); layers=[];
+  const add=(f,color)=>{const l=L.geoJSON({type:"Feature",geometry:f.geometry},{style:{color,weight:2,fillOpacity:.08}}).addTo(map);layers.push(l);return l;};
+  let bounds=null;
+  zs.forEach(f=>{const l=add(f,"#0f6b4f");bounds=bounds?bounds.extend(l.getBounds()):l.getBounds();});
+  zp.forEach(f=>{const l=add(f,"#c2410c");bounds=bounds?bounds.extend(l.getBounds()):l.getBounds();});
+  layers.push(L.marker([p.lat,p.lng]).addTo(map));
+  [...zs,...zp].forEach(f=>{const s=D.byNo[f.properties.no]; if(s) layers.push(L.circleMarker([s.lat,s.lng],{radius:6,color:"#1d2321",fillOpacity:.9}).bindTooltip(s.name).addTo(map));});
+  setTimeout(()=>{map.invalidateSize(); bounds?map.fitBounds(bounds,{padding:[10,10]}):map.setView([p.lat,p.lng],14);},50);
+}
+
+$("#go").onclick=search;
+$("#q").addEventListener("keydown",e=>{if(e.key==="Enter"){clearTimeout(acT);search();}});
+let acT, acN=0;
+$("#q").addEventListener("input",()=>{
+  clearTimeout(acT); const q=$("#q").value.trim(); if(q.length<4){$("#suggest").innerHTML="";return;}
+  acT=setTimeout(async()=>{ const n=++acN;
+    try{ const r=await fetch("https://photon.komoot.io/api/?limit=5&lat=-37.81&lon=144.96&bbox=140.9,-39.2,150,-34&q="+encodeURIComponent(q));
+      const j=await r.json(); if(n!==acN) return;
+      const AREA=["city","district","locality","county"];
+      const items=j.features.filter(f=>(f.properties.state||"").includes("Victoria")).map(f=>{const p=f.properties;
+        return {lng:f.geometry.coordinates[0],lat:f.geometry.coordinates[1],name:p.name,
+          area:!p.housenumber && (AREA.includes(p.type)||p.osm_value==="suburb"),
+          label:[p.housenumber?p.housenumber+" "+(p.street||""):(p.name||p.street),p.housenumber?(p.district||p.city):(p.city&&p.city!==p.name?p.city:""),p.postcode].filter(Boolean).join(", ")};});
+      $("#suggest").innerHTML=""; await ready;
+      items.forEach(it=>{const d=document.createElement("div");d.textContent="📍 "+it.label;d.onclick=()=>{$("#suggest").innerHTML="";$("#q").value=it.label;show(it);};$("#suggest").appendChild(d);});
+    }catch(_){}
+  },350);
+});
+$("#me").onclick=()=>{
+  if(!navigator.geolocation){$("#status").textContent="你的浏览器不支持定位";return;}
+  $("#status").textContent="正在定位…";
+  navigator.geolocation.getCurrentPosition(async pos=>{await ready; show({lat:pos.coords.latitude,lng:pos.coords.longitude,label:"你当前的位置"});},
+    ()=>$("#status").textContent="无法获取位置，请直接输入地址");
+};
+$("#rankSearch").addEventListener("input",()=>{rankShown=30;renderRank();});
+$("#more").onclick=()=>{rankShown+=50;renderRank();};
+
+$("#lead").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const f=Object.fromEntries(new FormData(e.target));
+  const text=`租学区房需求\n学区：${f.school||"-"}\n房型：${f.beds}\n预算：$${f.budget||"-"}/周\n入住：${f.when||"-"}\n孩子年级：${f.grade||"-"}\n联系方式：${f.contact}\n其他：${f.other||"-"}`;
+  let sent=false;
+  if(LEAD_ENDPOINT){ try{ const r=await fetch(LEAD_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({...f,_subject:"租学区房需求"})}); sent=r.ok; }catch(_){} }
+  const ok=$("#leadOk"); ok.classList.remove("hidden");
+  ok.textContent = sent ? "已收到！有合适房源会第一时间联系你。" : "已记录。下面是你的需求，可以复制后发给我们：\n\n"+text;
+});
+
+// Victorian government schools, International Student Program tuition (AUD/year)
+const FEES = {
+  std: {2026:[16000,19600,22000], 2027:[17000,20580,23100], name:"Standard 留学生学费"},
+  tmp: {2026:[16000,19600,22000], 2027:[17000,20580,23100], name:"Temporary 临时签证学费"},
+  dep: {2026:[13600,16660,18700], 2027:[14450,17493,19635], name:"Dependant 随行子女学费"}};
+const money = n => "$"+n.toLocaleString("en-AU");
+function calcFee(){
+  const [kind] = $("#visa").value.split("|"), l = +$("#lvl").value, out=$("#feeOut");
+  const extra = `<div class="note" style="margin-top:6px">另外每年还有校服、书本、电脑、营地等杂费，大约 $1,500–$3,500（公民和留学生都要交）。</div>`;
+  if(kind==="free"){ out.innerHTML=`<div class="zone"><span class="tag">公立学校</span><div class="name">免学费 $0</div>
+    <div class="meta">只交学校自定的杂费和自愿捐款。</div>${extra}</div>`; return; }
+  if(kind==="bridge"){ out.innerHTML=`<div class="none">过桥签证看<b>上一个签证</b>：上一个签证免学费就继续免，要交就继续交。请在上面选你之前持有的签证。</div>`; return; }
+  const f=FEES[kind];
+  out.innerHTML=`<div class="zone"><span class="tag">${f.name}</span>
+    <div class="stats">
+      <div class="stat"><b>${money(f[2027][l])}</b><span>2027 年 / 年</span></div>
+      <div class="stat"><b>${money(f[2026][l])}</b><span>2026 年 / 年</span></div>
+      <div class="stat"><b>$300</b><span>申请费（一次）</span></div>
+    </div>
+    <div class="meta" style="margin-top:6px">学费交给维州教育部，不是交给学校。${kind==="std"?"留学生还需要买 OSHC 学生保险，未成年留学生需安排住宿和监护。":""}</div>${extra}</div>`;
+}
+$("#visa").onchange=calcFee; $("#lvl").onchange=calcFee; calcFee();
+
+const ready = load();
+{const q0=new URLSearchParams(location.search).get("q"); if(q0){$("#q").value=q0; search();}}
+</script>
+</body>
+</html>

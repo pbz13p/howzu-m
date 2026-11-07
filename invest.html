@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>墨尔本投资房回报测算 · 好租 Howzu</title>
+<link rel="icon" href="favicon.ico" sizes="32x32"><link rel="icon" href="icons/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0f6b4f"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="好租"><meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="description" content="维州投资房完整测算：印花税、海外买家附加税、FIRB、土地税、海外业主附加税、管理费、负扣税、折旧、资本利得税，算出真实税后回报和10年IRR。">
+<link rel="stylesheet" href="css/site.css?v=20261107">
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1d2321;--muted:#6b726f;--line:#e4e1d8;--accent:#0f6b4f;--accent2:#e8f3ee;--warn:#9a5b00;--warnbg:#fff6e5;--neg:#b42318}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+main{max-width:1760px;margin:0 auto;padding:22px 20px;display:grid;grid-template-columns:400px minmax(0,1fr);gap:22px;align-items:start}
+@media(max-width:820px){main{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
+h2{font-size:16px;margin:0 0 8px}
+h3{font-size:14px;margin:14px 0 6px;color:var(--accent)}
+label{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;margin:6px 0}
+label span{color:var(--muted);flex:1}
+label input,label select{width:132px;font-size:15px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;text-align:right;font-family:inherit;background:#fff}
+label select{text-align:left}
+details.more summary{cursor:pointer;color:var(--accent);font-size:13px;margin-top:8px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.kpi{background:var(--bg);border-radius:10px;padding:10px}
+.kpi b{display:block;font-size:22px}
+.kpi span{font-size:12px;color:var(--muted)}
+.neg{color:var(--neg)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:6px 4px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left;white-space:normal}
+thead th{color:var(--muted);font-weight:500}
+tr.total td{font-weight:700;border-top:2px solid var(--ink)}
+.scroll{overflow-x:auto}
+.warn{background:var(--warnbg);color:var(--warn);border-radius:10px;padding:10px;font-size:13px;margin-bottom:8px}
+.note{font-size:12px;color:var(--muted)}
+.note a{color:var(--accent)}
+.tabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.tabs button{font-size:13px;padding:7px 12px;border:0;border-radius:20px;background:var(--bg);cursor:pointer}
+.tabs button.on{background:var(--accent);color:#fff}
+.small{font-size:11px;color:var(--muted)}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="in">
+  <a class="logo" href="index.html"><i>好</i>好租 Howzu<small>墨尔本 · 学区 · 租房 · 投资</small></a>
+  <div class="links"><a href="index.html">🏫 查学区</a><a href="rentals.html">🏠 在租房源</a><a href="invest.html" class="on">📈 投资测算</a></div>
+  <a class="post" href="post.html">＋ 免费发房源</a>
+</div></nav>
+<header class="hero"><div class="in"><h1>墨尔本投资房回报测算</h1><p>印花税、海外买家税费、FIRB、土地税、管理费、负扣税、折旧、资本利得税全部算进去，看真实的税后回报。</p></div></header>
+<main>
+<section>
+  <div class="card" id="form">
+    <h2>房子和买家</h2>
+    <label><span>买家身份</span><select id="buyerType">
+      <option value="resident">澳洲公民 / PR（税务居民）</option>
+      <option value="foreignHere">临时签证：学生（课程 6 个月以上）/ 工签在澳 6 个月以上</option>
+      <option value="whm">临时签证：打工度假 / 旅游等短期签证</option>
+      <option value="foreignAbroad">海外人士（不在澳洲居住）</option>
+    </select></label>
+    <label><span>房产类型</span><select id="propType">
+      <option value="new">新房（已完工，从未入住）</option>
+      <option value="offplanStrata">楼花（公寓/联排，未完工）</option>
+      <option value="established">二手房</option>
+    </select></label>
+    <label><span>房价 $</span><input id="price" type="number" step="10000"></label>
+    <label><span>土地价值（Site value）$</span><input id="landValue" type="number" step="10000"></label>
+    <div class="small">土地税按土地价值算：公寓通常只占房价 10–25%，独立屋 50–70%。可在地税单上查到。</div>
+    <label id="otpRow"><span>合同后剩余建造成本 $</span><input id="otpRemainingBuild" type="number" step="10000"></label>
+
+    <h3>贷款</h3>
+    <label><span>贷款比例 LVR %</span><input id="lvr" type="number" step="5"></label>
+    <label><span>利率 %</span><input id="rate" type="number" step="0.05"></label>
+    <label><span>只还利息年数（0 = 本息同还）</span><input id="ioYears" type="number" step="1"></label>
+
+    <h3>租金</h3>
+    <label><span>周租 $</span><input id="weeklyRent" type="number" step="10"></label>
+    <label><span>每年空置周数</span><input id="vacancyWeeks" type="number" step="1"></label>
+
+    <h3>税务</h3>
+    <label><span>你在澳洲的其他年收入 $</span><input id="otherIncome" type="number" step="5000"></label>
+    <label><span>有私人住院医保（免 Medicare 附加税）</span><select id="privateCover"><option value="yes">有</option><option value="no">没有</option></select></label>
+    <label><span>已持有的其他维州应税土地 $</span><input id="otherVicLand" type="number" step="50000"></label>
+    <label><span>可折旧建筑成本（Div 43）$</span><input id="buildCost" type="number" step="10000"></label>
+    <label><span>家具设备折旧（Div 40，仅新房）$</span><input id="div40" type="number" step="1000"></label>
+
+    <details class="more"><summary>持有成本、增长假设、出售（点开调整）</summary>
+      <h3>持有成本（每年）</h3>
+      <label><span>管理费 %（不含 GST）</span><input id="mgmtPct" type="number" step="0.1"></label>
+      <label><span>出租佣金（周租金倍数）</span><input id="lettingWeeks" type="number" step="0.5"></label>
+      <label><span>平均租约年数</span><input id="leaseYears" type="number" step="0.5"></label>
+      <label><span>Condition report 每次 $</span><input id="conditionReport" type="number" step="50"></label>
+      <label><span>Council rates $</span><input id="council" type="number" step="50"></label>
+      <label><span>水费固定部分 $</span><input id="water" type="number" step="50"></label>
+      <label><span>物业费 OC $</span><input id="oc" type="number" step="100"></label>
+      <label><span>房东保险 $</span><input id="insurance" type="number" step="50"></label>
+      <label><span>维修保养 $</span><input id="maintenance" type="number" step="100"></label>
+      <label><span>燃气/电器安全检查等 $</span><input id="compliance" type="number" step="50"></label>
+      <label><span>记账/报税费 $</span><input id="accounting" type="number" step="50"></label>
+      <h3>买入一次性费用</h3>
+      <label><span>律师/过户 $</span><input id="legal" type="number" step="100"></label>
+      <label><span>验房 $</span><input id="inspection" type="number" step="100"></label>
+      <label><span>贷款手续/估价 $</span><input id="loanSetup" type="number" step="100"></label>
+      <label><span>家具/首次维修 $</span><input id="setup" type="number" step="500"></label>
+      <h3>增长假设（每年）</h3>
+      <label><span>房价增长 %</span><input id="growth" type="number" step="0.5"></label>
+      <label><span>土地价值增长 %</span><input id="landGrowth" type="number" step="0.5"></label>
+      <label><span>租金增长 %</span><input id="rentGrowth" type="number" step="0.5"></label>
+      <label><span>费用通胀 %</span><input id="cpi" type="number" step="0.5"></label>
+      <h3>出售</h3>
+      <label><span>持有年数</span><input id="hold" type="number" step="1" min="1" max="30"></label>
+      <label><span>卖房中介佣金 %（不含 GST）</span><input id="sellPct" type="number" step="0.1"></label>
+      <label><span>营销/律师等 $</span><input id="sellFixed" type="number" step="500"></label>
+    </details>
+  </div>
+</section>
+
+<section>
+  <div id="warnings"></div>
+  <div class="card">
+    <h2>核心结果</h2>
+    <div class="kpis" id="kpis"></div>
+    <p class="note" id="kpiNote"></p>
+  </div>
+
+  <div class="card">
+    <h2>同一套房：不同身份买家对比</h2>
+    <div class="scroll"><table id="compare"></table></div>
+    <p class="note">海外买家按 LVR 60% 计算（多数银行上限），其他条件相同。</p>
+  </div>
+
+  <div class="card">
+    <h2>买入要准备多少钱</h2>
+    <table id="acq"></table>
+  </div>
+
+  <div class="card">
+    <h2>第一年收支明细</h2>
+    <table id="y1"></table>
+  </div>
+
+  <div class="card">
+    <h2>逐年现金流</h2>
+    <div class="scroll"><table id="yearly"></table></div>
+  </div>
+
+  <div class="card">
+    <h2>出售时</h2>
+    <table id="sale"></table>
+  </div>
+
+  <div class="card note">
+    <p><b>计算依据（2026 年 11 月核实）</b>：维州印花税、海外买家附加税 8%、楼花印花税临时优惠（2027-4-21 前签约）、土地税 2024–2033 税率表（含 COVID 附加费）、海外业主附加土地税 4%、空置住宅税 —— <a href="https://www.sro.vic.gov.au" target="_blank" rel="noopener">SRO Victoria</a>；FIRB 申请费 2026-27、空置费（申请费 2 倍）、外国人二手房购买禁令至 2029-6-30、个人所得税 2026-27 税率、外国居民资本利得税预扣 15% —— <a href="https://www.ato.gov.au" target="_blank" rel="noopener">ATO</a>。</p>
+    <p><b>税务处理</b>：学生（课程 6 个月以上）和在澳 6 个月以上的工签持有人，ATO 一般视为税务居民，按居民税率并享受 LITO，但作为临时居民，出售投资房<b>没有 50% 资本利得折扣</b>；打工度假和短期签证一般是外国居民，按打工度假税率，出售时有 15% 预扣；海外人士按外国居民税率，没有免税额。租金亏损（收入税亏损）先抵扣当年其他澳洲收入，用不完的无限期结转，出售当年可抵扣资本利得（先算 50% 折扣再抵亏损）。已计入 LITO、Medicare 及低收入减免、Medicare 附加税（按单身门槛，投资亏损加回计算）。FIRB 申请费、FPAD 计入成本基数。税务居民身份最终以 ATO 居住测试为准。</p>
+    <p><b>重要提示</b>：本工具提供的是一般性测算，不构成税务、财务或法律建议。具体情况请咨询注册税务代理、律师或持牌贷款经纪。</p>
+  </div>
+</section>
+</main>
+
+<script src="invest-engine.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const PCT = ["lvr","rate","mgmtPct","growth","landGrowth","rentGrowth","cpi","sellPct"];
+const DEFAULTS = {
+  buyerType:"resident", propType:"new", privateCover:"yes", price:650000, landValue:150000, otpRemainingBuild:250000,
+  lvr:80, rate:6.2, ioYears:5, weeklyRent:600, vacancyWeeks:2,
+  otherIncome:100000, otherVicLand:0, buildCost:300000, div40:10000,
+  mgmtPct:6.6, lettingWeeks:1, leaseYears:1, conditionReport:300, council:1600, water:800, oc:4000,
+  insurance:500, maintenance:800, compliance:300, accounting:300,
+  legal:2000, inspection:500, loanSetup:800, setup:0,
+  growth:4, landGrowth:4, rentGrowth:3, cpi:3, hold:10, sellPct:2, sellFixed:3000,
+};
+const money = (n, d=0) => (n<0?"-":"") + "$" + Math.abs(n).toLocaleString("en-AU",{maximumFractionDigits:d});
+const pct = (n, d=2) => n==null ? "—" : (n*100).toFixed(d) + "%";
+const cls = n => n < 0 ? ' class="neg"' : "";
+
+function readInputs(){
+  const o = {};
+  for (const k of Object.keys(DEFAULTS)) {
+    const el = $("#"+k); let v = el.value;
+    if (el.tagName !== "SELECT") v = parseFloat(v) || 0;
+    if (PCT.includes(k)) v = v / 100;
+    o[k] = v;
+  }
+  o.loanYears = 30; o.io = o.ioYears > 0; o.firbInCostBase = true; o.privateCover = o.privateCover === "yes";
+  o.hold = Math.max(1, Math.min(30, Math.round(o.hold)));
+  return o;
+}
+
+function render(){
+  const inp = readInputs();
+  $("#otpRow").style.display = inp.propType === "offplanStrata" ? "" : "none";
+  const r = InvestEngine.run(inp);
+  $("#warnings").innerHTML = r.warnings.map(w=>`<div class="warn">⚠️ ${w}</div>`).join("");
+
+  const m = r.metrics, y1 = r.years[0];
+  $("#kpis").innerHTML = [
+    [pct(m.grossYield), "毛租金回报率"],
+    [pct(m.netYield), "净租金回报率（扣费用，未扣贷款）"],
+    [money(y1.afterTaxCF/52), "第一年每周税后现金流", y1.afterTaxCF],
+    [pct(m.irr), `${inp.hold} 年税后 IRR（年化）`, m.irr],
+    [money(r.upfrontCash), "买入要准备的现金"],
+    [money(m.totalProfit), `${inp.hold} 年税后总盈利`, m.totalProfit],
+  ].map(([v,l,s])=>`<div class="kpi"><b${s<0?' class="neg"':''}>${v}</b><span>${l}</span></div>`).join("");
+  $("#kpiNote").textContent = `IRR 已计入首付、所有买入费用、每年税后现金流、出售时的费用、还清贷款和资本利得税。`;
+
+  // comparison across buyer types
+  const types = [["resident","公民/PR"],["foreignHere","学生/工签"],["whm","打工度假等"],["foreignAbroad","海外人士"]];
+  const rows = types.map(([t,n]) => {
+    const rr = InvestEngine.run({...inp, buyerType:t, lvr: t==="resident" ? inp.lvr : Math.min(inp.lvr, 0.6),
+      otherIncome: t==="foreignAbroad" ? 0 : t==="whm" ? Math.min(inp.otherIncome, 45000) : inp.otherIncome});
+    const extra = rr.acq.filter(a=>/FPAD|FIRB/.test(a.label)).reduce((s,a)=>s+a.amt,0);
+    const aos = rr.years[0].exp.find(e=>/附加土地税/.test(e[0]));
+    return {n, rr, extra, aos: aos?aos[1]:0};
+  });
+  $("#compare").innerHTML = `<thead><tr><th></th>${rows.map(x=>`<th>${x.n}</th>`).join("")}</tr></thead><tbody>
+    <tr><td>海外买家附加税 + FIRB</td>${rows.map(x=>`<td>${money(x.extra)}</td>`).join("")}</tr>
+    <tr><td>买入要准备的现金</td>${rows.map(x=>`<td>${money(x.rr.upfrontCash)}</td>`).join("")}</tr>
+    <tr><td>每年海外业主附加土地税</td>${rows.map(x=>`<td>${money(x.aos)}</td>`).join("")}</tr>
+    <tr><td>第一年税后现金流</td>${rows.map(x=>`<td${cls(x.rr.years[0].afterTaxCF)}>${money(x.rr.years[0].afterTaxCF)}</td>`).join("")}</tr>
+    <tr><td>出售时资本利得税</td>${rows.map(x=>`<td>${money(x.rr.sale.cgtTax)}</td>`).join("")}</tr>
+    <tr><td>${inp.hold} 年税后 IRR</td>${rows.map(x=>`<td${cls(x.rr.metrics.irr)}><b>${pct(x.rr.metrics.irr)}</b></td>`).join("")}</tr>
+  </tbody>`;
+
+  $("#acq").innerHTML = `<tbody>
+    <tr><td>首付（房价 × ${(1-inp.lvr)*100|0}%）</td><td>${money(r.deposit)}</td></tr>
+    ${r.acq.map(a=>`<tr><td>${a.label}${a.note?`<div class="small">${a.note}</div>`:""}</td><td>${money(a.amt)}</td></tr>`).join("")}
+    <tr class="total"><td>合计现金</td><td>${money(r.upfrontCash)}</td></tr>
+    <tr><td class="small">贷款金额</td><td class="small">${money(r.loan0)}</td></tr></tbody>`;
+
+  $("#y1").innerHTML = `<tbody>
+    <tr><td>租金收入（扣空置）</td><td>${money(y1.grossRent)}</td></tr>
+    ${y1.exp.map(e=>`<tr><td>− ${e[0]}${e[2]?"":'<div class="small">不可抵税</div>'}</td><td>${money(-e[1])}</td></tr>`).join("")}
+    <tr><td>− 贷款利息</td><td>${money(-y1.interest)}</td></tr>
+    ${y1.principal>1?`<tr><td>− 还本金</td><td>${money(-y1.principal)}</td></tr>`:""}
+    <tr class="total"><td>税前现金流</td><td${cls(y1.preTaxCF)}>${money(y1.preTaxCF)}</td></tr>
+    <tr><td class="small">报税时：租金净额 ${money(y1.taxableProperty)}（已扣折旧 Div 43 ${money(y1.div43)}、Div 40 ${money(y1.div40)}，折旧不花现金）</td><td></td></tr>
+    <tr><td>${y1.taxEffect<0?"+ 负扣税退税":"− 多交的税"}</td><td${cls(-y1.taxEffect)}>${money(-y1.taxEffect)}</td></tr>
+    <tr class="total"><td>税后现金流</td><td${cls(y1.afterTaxCF)}>${money(y1.afterTaxCF)}<div class="small">每周 ${money(y1.afterTaxCF/52)}</div></td></tr></tbody>`;
+
+  $("#yearly").innerHTML = `<thead><tr><th>年</th><th>租金</th><th>费用</th><th>利息</th><th>税务影响</th><th>税后现金流</th><th>房价</th><th>剩余贷款</th></tr></thead><tbody>
+    ${r.years.map(y=>`<tr><td>${y.y}</td><td>${money(y.grossRent)}</td><td>${money(y.opex)}</td><td>${money(y.interest)}</td>
+      <td${cls(-y.taxEffect)}>${money(-y.taxEffect)}</td><td${cls(y.afterTaxCF)}>${money(y.afterTaxCF)}</td><td>${money(y.value)}</td><td>${money(y.balance)}</td></tr>`).join("")}</tbody>`;
+
+  const s = r.sale;
+  $("#sale").innerHTML = `<tbody>
+    <tr><td>第 ${inp.hold} 年卖出价（按 ${(inp.growth*100).toFixed(1)}%/年）</td><td>${money(s.salePrice)}</td></tr>
+    <tr><td>− 卖房费用（佣金含 GST + 其他）</td><td>${money(-s.sellCost)}</td></tr>
+    <tr><td>成本基数（房价 + 印花税 + FPAD + FIRB 申请费 + 律师/验房 − 已扣 Div 43 折旧）</td><td>${money(s.costBase)}</td></tr>
+    <tr><td>资本利得</td><td>${money(s.gross)}</td></tr>
+    <tr><td>${s.discount?"50% 资本利得折扣（持有超 12 个月的居民个人）":"无 50% 折扣（外国居民及临时居民 2012-5-8 后的收益不适用）"}</td><td>${money(s.assessable)}</td></tr>
+    <tr><td>− 资本利得税（按出售当年边际税率，先用累计结转的租金亏损抵扣）</td><td>${money(-s.cgtTax)}</td></tr>
+    ${s.frcgw?`<tr><td class="small">买家律师会先预扣 15%（${money(s.frcgw)}）交给 ATO，报税后多退少补，这里已按最终税额计算</td><td></td></tr>`:""}
+    <tr><td>− 还清贷款</td><td>${money(-s.loanPayout)}</td></tr>
+    <tr class="total"><td>出售后到手现金</td><td>${money(s.netSale)}</td></tr></tbody>`;
+}
+
+for (const [k,v] of Object.entries(DEFAULTS)) { const el=$("#"+k); el.value = PCT.includes(k) ? v : v; }
+// sensible defaults when type changes
+$("#propType").addEventListener("change", e => {
+  if (e.target.value === "established") { $("#buildCost").value = 0; $("#div40").value = 0; }
+  else { if (!+$("#buildCost").value) $("#buildCost").value = Math.round(+$("#price").value*0.45/1000)*1000; }
+});
+$("#buyerType").addEventListener("change", e => {
+  if (e.target.value !== "resident" && +$("#lvr").value > 60) $("#lvr").value = 60;
+  if (e.target.value === "foreignAbroad") $("#otherIncome").value = 0;
+});
+document.querySelectorAll("input,select").forEach(el=>el.addEventListener("input", render));
+document.querySelectorAll("select").forEach(el=>el.addEventListener("change", render));
+render();
+</script>
+</body>
+</html>
