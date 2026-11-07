@@ -122,12 +122,12 @@
     let poster_ = null, png = null;
     const ready = (async () => {
       const c = await poster(x);
-      try { const blob = await new Promise(r => c.toBlob(r, "image/jpeg", 0.9)); m.querySelector(".poster").src = URL.createObjectURL(blob);
+      try { const blob = await new Promise(r => c.toBlob(r, "image/jpeg", 0.9)); m.querySelector(".poster").src = c.toDataURL("image/jpeg", 0.9);
         poster_ = new File([blob], `好租-${(x.title || "房源").slice(0, 20)}.jpg`, { type: "image/jpeg" }); } catch (_) {}
       try { png = await new Promise(r => c.toBlob(r, "image/png")); } catch (_) {}
     })();
     const $ = q => m.querySelector(q);
-    const longPress = isMobile ? "长按上面的海报图 → 发送给朋友 / 存到相册" : "在上面的海报图上点右键 → 复制图片，去微信按 Ctrl+V";
+    const longPress = isMobile ? "长按上面的海报图 → 「存储到照片 / 保存图片」，再到微信里从相册选图发送" : "在上面的海报图上点右键 → 复制图片，去微信按 Ctrl+V";
     m.addEventListener("click", async e => {
       if (e.target.closest(".moreT")) { e.preventDefault(); $(".more").hidden = false; e.target.remove(); return; }
       const a = e.target.closest("button")?.dataset.a; if (!a) return;
